@@ -74,7 +74,8 @@ export const CLUB_OFFICE_HOURS: OfficeHours[] = [
   { label: "Lunes", schedule: "Cerrado" },
   { label: "Martes", schedule: "15 a 19 h" },
   { label: "Miércoles", schedule: "14 a 19 h" },
-  { label: "Jueves y viernes", schedule: "15 a 19 h" },
+  { label: "Jueves", schedule: "15 a 19 h" },
+  { label: "Viernes", schedule: "14 a 19 h" },
   { label: "Sábados", schedule: "11 a 18 h" },
   { label: "Domingos", schedule: "10 a 15 h" },
 ];

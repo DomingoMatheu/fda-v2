@@ -20,9 +20,13 @@ export interface MembershipFee {
 }
 
 export const MEMBERSHIP_FEES: MembershipFee[] = [
-  { category: "Grupo familiar pleno", signUp: "$95.000", monthly: "$47.500" },
-  { category: "Grupo familiar básico", signUp: "$72.000", monthly: "$36.000" },
-  { category: "Mayor (+18 años)", signUp: "$48.000", monthly: "$24.000" },
-  { category: "Menor", signUp: "$27.000", monthly: "$13.500" },
-  { category: "Jubilado con la mínima", signUp: "$27.000", monthly: "$13.500" },
+  { category: "Grupo familiar básico", signUp: "$88.000", monthly: "$44.000" },
+  { category: "Grupo familiar pleno", signUp: "$116.000", monthly: "$58.000" },
+  {
+    category: "Individual / Deportivo (mayores de 18 años)",
+    signUp: "$59.000",
+    monthly: "$29.500",
+  },
+  { category: "Menor", signUp: "$33.000", monthly: "$16.500" },
+  { category: "Jubilado", signUp: "$33.000", monthly: "$16.500" },
 ];

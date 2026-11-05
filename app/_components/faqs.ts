@@ -145,8 +145,8 @@ export const FAQ_GROUPS: FaqGroup[] = [
           {
             type: "list",
             items: [
-              "Grupo familiar pleno: madres o padres con hijos de entre 5 y 17 años.",
-              "Grupo familiar básico: madres o padres con hijos de entre 1 y 4 años.",
+              "Grupo familiar básico: padres con 1 hijo menor de 5 años o sin hijos.",
+              "Grupo familiar pleno: padres con 1 hijo mayor de 5 años o más de un hijo, hasta 17 años.",
             ],
           },
           {
