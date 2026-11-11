@@ -5,8 +5,9 @@ import {
   CLUB_INSTAGRAM_URL,
   CLUB_PHONE,
 } from "../app/_components/club-info";
+import { WEB3FORMS_ACCESS_KEY } from "../app/_services/contact.service";
 
-const FORMSUBMIT = "https://formsubmit.co/**";
+const FORM_SERVICE = "https://api.web3forms.com/**";
 
 async function fillRequiredFields(page: Page): Promise<void> {
   const form = page.locator("#contacto form");
@@ -21,7 +22,7 @@ test.describe("contact form", () => {
 
   test("does not send when name or email are missing", async ({ page }) => {
     let sent = false;
-    await page.route(FORMSUBMIT, (route) => {
+    await page.route(FORM_SERVICE, (route) => {
       sent = true;
       return route.abort();
     });
@@ -43,12 +44,14 @@ test.describe("contact form", () => {
   test("sends the inquiry to the club inbox and confirms it", async ({
     page,
   }) => {
-    let payload: Record<string, string> = {};
+    let payload: Record<string, unknown> = {};
     let url = "";
-    await page.route(FORMSUBMIT, async (route) => {
+    await page.route(FORM_SERVICE, async (route) => {
       url = route.request().url();
       payload = route.request().postDataJSON();
-      await route.fulfill({ json: { success: "true", message: "ok" } });
+      await route.fulfill({
+        json: { success: true, message: "Email sent successfully!" },
+      });
     });
 
     await fillRequiredFields(page);
@@ -61,12 +64,14 @@ test.describe("contact form", () => {
     await expect(
       page.locator("#contacto form").getByRole("status"),
     ).toContainText("Recibimos tu consulta");
-    expect(url).toBe(`https://formsubmit.co/ajax/${CLUB_EMAIL}`);
+    expect(url).toBe("https://api.web3forms.com/submit");
     expect(payload).toMatchObject({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      replyto: "prueba@example.com",
+      botcheck: false,
       Nombre: "Prueba Automática",
       Email: "prueba@example.com",
       Mensaje: "Consulta de prueba",
-      _replyto: "prueba@example.com",
     });
     await expect(
       page.locator("#contacto form").getByLabel("Nombre y apellido"),
@@ -74,9 +79,10 @@ test.describe("contact form", () => {
   });
 
   test("offers WhatsApp when the form service fails", async ({ page }) => {
-    await page.route(FORMSUBMIT, (route) =>
+    await page.route(FORM_SERVICE, (route) =>
       route.fulfill({
-        json: { success: "false", message: "This form needs Activation" },
+        status: 400,
+        json: { success: false, message: "Invalid access key" },
       }),
     );
 

@@ -32,7 +32,7 @@ Marketing site for Club S&D F.A. Domingo Matheu. Next.js **16.2.6** App Router, 
   - `club-info.ts` — contact details, address, hours, social links. Single source of truth: never hard-code these anywhere else.
   - `disciplines.ts`, `facilities.ts` — the lists that drive the disciplines grid, the hero marquee and counters, and the facilities cards.
   - `nav-links.ts` — the nav links: the home sections, grouped under the "El club" dropdown (`NavDropdown`), and the pages outside the home (Novedades, Preguntas frecuentes), always in view.
-- `app/_services/` — calls to external services (e.g. `contact.service.ts`, which posts the contact form to FormSubmit).
+- `app/_services/` — calls to external services (e.g. `contact.service.ts`, which posts the contact form to Web3Forms).
 - `app/_types/` — request/response types for those services.
 - `app/_lib/` — non-UI helpers (e.g. `site-url.ts`).
 - `app/styles/` — one plain-CSS file per section, imported in order from `app/globals.css`.

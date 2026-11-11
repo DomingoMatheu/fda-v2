@@ -3,7 +3,7 @@
 ## Today
 
 - The site is static: content comes from data files in `app/_components/`, not from an API
-- The only network call is the contact form, which posts to FormSubmit
+- The only network call is the contact form, which posts to Web3Forms
 
 ## Services layer
 
