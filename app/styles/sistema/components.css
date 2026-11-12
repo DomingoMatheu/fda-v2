@@ -613,3 +613,8 @@
   color: var(--sys-muted);
   padding: 12px 0;
 }
+
+/* ───────── Demo reset ───────── */
+.sys-reset__text {
+  color: var(--ink-soft);
+}

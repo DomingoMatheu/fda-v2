@@ -116,8 +116,10 @@ if not, it is deleted and the landing stays as is.
   care and keep both sides in sync.
 - `/sistema` is `noindex`, out of the sitemap and disallowed in `robots.ts`.
 - Demo conventions: fixed "today" in `_lib/clock.ts`, Context + `useReducer`
-  store (`SystemProvider`, `useSystem()`), no persistence, derived states
-  (overdue fees, pool access) computed in pure helpers, never stored.
+  store (`SystemProvider`, `useSystem()`) saved in the visitor's
+  localStorage (`_lib/demo-storage.ts`; bump `DEMO_DATA_VERSION` when the
+  seed or `SystemState` changes) with a "Reiniciar demo" button, derived
+  states (overdue fees, pool access) computed in pure helpers, never stored.
 - Same rules as the landing: code in English, copy in Rioplatense Spanish,
   plain CSS, hooks in `use-*.ts`, data in data files, no `console.log`.
 

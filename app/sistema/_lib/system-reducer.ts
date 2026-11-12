@@ -53,7 +53,9 @@ export type SystemAction =
       status: MemberStatus;
     })
   | (Stamp & { type: "updateSettings"; settings: SystemSettings })
-  | (Stamp & { type: "sendDebtNotices"; memberIds: string[] });
+  | (Stamp & { type: "sendDebtNotices"; memberIds: string[] })
+  // Puts back what the browser had saved, or the seed when starting over.
+  | { type: "replaceState"; state: SystemState };
 
 function withActivity(
   state: SystemState,
@@ -388,6 +390,8 @@ export function systemReducer(
         }),
       };
     }
+    case "replaceState":
+      return action.state;
     case "sendDebtNotices":
       return sendDebtNotices(state, action);
     case "updateSettings":

@@ -8,8 +8,10 @@ import { ROLE_LABELS } from "../_data/labels";
 import { logout } from "../_actions/auth";
 import { DEMO_TODAY } from "../_lib/clock";
 import { formatDate } from "../_lib/format";
+import { DemoResetModal } from "./demo-reset-modal";
 import { Icon } from "./icons";
 import { MemberSearch } from "./member-search";
+import { useDemoReset } from "./use-demo-reset";
 import { useShell } from "./use-shell";
 import { useSystem } from "./use-system";
 
@@ -28,6 +30,7 @@ export function SystemShell({ children }: SystemShellProps) {
     sidebarRef,
     menuButtonRef,
   } = useShell();
+  const reset = useDemoReset();
 
   return (
     <div className={`sys-app${isMenuOpen ? " is-menu-open" : ""}`}>
@@ -64,6 +67,16 @@ export function SystemShell({ children }: SystemShellProps) {
             ))}
           </ul>
         </nav>
+        <button
+          type="button"
+          className="sys-sidebar__reset"
+          onClick={() => {
+            closeMenu();
+            reset.open();
+          }}
+        >
+          Reiniciar demo
+        </button>
         <div className="sys-sidebar__user">
           <div>
             <p className="sys-sidebar__user-name">{user.name}</p>
@@ -107,6 +120,9 @@ export function SystemShell({ children }: SystemShellProps) {
           {children}
         </main>
       </div>
+      {reset.isOpen && (
+        <DemoResetModal onCancel={reset.close} onConfirm={reset.confirm} />
+      )}
     </div>
   );
 }

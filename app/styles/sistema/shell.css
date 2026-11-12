@@ -109,6 +109,18 @@
   width: 16px;
   height: 16px;
 }
+.sys-sidebar__reset {
+  align-self: flex-start;
+  margin: 0 18px 12px;
+  padding: 4px 0;
+  font-size: 13px;
+  color: rgba(251, 244, 220, 0.62);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sys-sidebar__reset:hover {
+  color: var(--lime);
+}
 .sys-backdrop {
   display: none;
 }

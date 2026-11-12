@@ -36,6 +36,8 @@ export interface SystemContextValue {
   recordAccess: (log: Omit<AccessLog, "id" | "at">) => void;
   setMemberStatus: (memberId: string, status: MemberStatus) => void;
   updateSettings: (settings: SystemSettings) => void;
+  // Forgets everything saved in this browser and starts from the seed.
+  resetDemo: () => void;
   // Emails a debt notice to the debtors picked that have an address and
   // returns how many were sent.
   sendDebtNotices: (memberIds: string[]) => number;

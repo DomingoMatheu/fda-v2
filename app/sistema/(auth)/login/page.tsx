@@ -30,8 +30,8 @@ export default async function LoginPage() {
       <section className="sys-login__panel">
         <LoginForm />
         <p className="sys-login__note">
-          Demo con datos de prueba. Lo que cargues se borra al recargar la
-          página.
+          Demo con datos de prueba. Lo que cargues queda guardado en este
+          navegador; para empezar de cero usá “Reiniciar demo”.
         </p>
       </section>
     </div>

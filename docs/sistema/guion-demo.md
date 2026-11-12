@@ -1,10 +1,10 @@
 # Guion de la demo del sistema (10 minutos)
 
 Para mostrarle al club la demo de `/sistema`. Los socios y DNI de abajo salen
-de los datos de prueba, que son siempre los mismos: la demo arranca igual en
-cada carga y **recargar la página vuelve todo al estado inicial** (conviene
-recargar antes de cada presentación). La fecha de "hoy" está fija en el
-11/11/2026.
+de los datos de prueba, que son siempre los mismos. Lo que cargues queda
+guardado en ese navegador, así que **antes de cada presentación tocá
+"Reiniciar demo"** (abajo en la barra lateral) para volver al estado inicial.
+La fecha de "hoy" está fija en el 11/11/2026.
 
 Tené abiertas dos pestañas o dos dispositivos: la compu con el usuario de
 Secretaría y, si se puede, un celular con el de Portería. Las cuatro cuentas

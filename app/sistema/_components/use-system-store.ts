@@ -5,15 +5,18 @@ import { buildSeed } from "../_data/seed";
 import { nextReceiptSequence } from "../_lib/billing";
 import { DEMO_TODAY, nowIso } from "../_lib/clock";
 import { canEmailNotice } from "../_lib/debt-notice";
+import { clearDemoState } from "../_lib/demo-storage";
 import { nextMemberNumber, systemReducer } from "../_lib/system-reducer";
 import type { SystemUser } from "../_types";
 import type { SystemContextValue } from "./system-context";
+import { useDemoPersistence } from "./use-demo-persistence";
 import { useToasts } from "./use-toasts";
 
-// The demo's in-memory store: seeded mock data plus the actions the screens
-// call. Nothing is persisted; reloading the page starts over.
+// The demo's store: seeded mock data plus the actions the screens call. It is
+// saved in the visitor's browser, and "Reiniciar demo" goes back to the seed.
 export function useSystemStore(user: SystemUser): SystemContextValue {
   const [state, dispatch] = useReducer(systemReducer, undefined, buildSeed);
+  useDemoPersistence(state, dispatch);
   const { toasts, notify, dismiss } = useToasts();
   const stamp = (): { at: string; userId: string } => ({
     at: nowIso(),
@@ -57,6 +60,11 @@ export function useSystemStore(user: SystemUser): SystemContextValue {
       ).length;
       dispatch({ type: "sendDebtNotices", memberIds, ...stamp() });
       return sent;
+    },
+    resetDemo: () => {
+      clearDemoState();
+      dispatch({ type: "replaceState", state: buildSeed() });
+      notify("La demo volvió a los datos de prueba iniciales.", "info");
     },
     updateSettings: (settings) =>
       dispatch({ type: "updateSettings", settings, ...stamp() }),

@@ -121,6 +121,36 @@ test.describe("sistema", () => {
     await expect(badges).toContainText("Al día");
   });
 
+  test("keeps changes after a reload until the demo is reset", async ({
+    page,
+  }) => {
+    await login(page);
+    await page.goto(`/sistema/socios/${DEBTOR.id}`);
+    const badges = page.locator(".sys-member__badges");
+    await page.getByRole("button", { name: "Registrar cobro" }).first().click();
+    await page
+      .getByRole("dialog", { name: "Registrar cobro" })
+      .getByRole("button", { name: /Confirmar cobro/ })
+      .click();
+    await expect(badges).toContainText("Al día");
+
+    await page.reload();
+    await expect(badges).toContainText("Al día");
+
+    // On a phone the reset button lives in the closed menu.
+    const openMenu = page.getByRole("button", { name: "Abrir menú" });
+    if (await openMenu.isVisible()) await openMenu.click();
+    await page.getByRole("button", { name: "Reiniciar demo" }).click();
+    await page
+      .getByRole("dialog", { name: "¿Reiniciar la demo?" })
+      .getByRole("button", { name: "Reiniciar" })
+      .click();
+    await expect(badges).toContainText("Moroso");
+
+    await page.reload();
+    await expect(badges).toContainText("Moroso");
+  });
+
   test("emails a debt notice to every debtor at once", async ({ page }) => {
     await login(page, "tesoreria");
     await page.goto("/sistema/cobranza");

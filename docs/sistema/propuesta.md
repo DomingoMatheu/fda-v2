@@ -216,7 +216,10 @@ API (NestJS, repo LumarSoft/fda-api)  ──  Prisma  ──  MySQL
 - Estado en el cliente con Context + `useReducer` (`SystemProvider`) sembrado
   con los datos de prueba; las acciones (registrar cobro, alta de socio, emitir
   carnet, cargar apto, registrar ingreso) mutan ese estado para que la demo se
-  sienta real. Sin persistencia: recargar la página vuelve al estado inicial.
+  sienta real. El estado se guarda en el navegador de cada visitante
+  (localStorage), así quien la prueba varios días encuentra lo que cargó; el
+  botón "Reiniciar demo" vuelve a los datos de prueba. No hay nada compartido
+  entre personas.
 - Fecha "de hoy" fija en `app/sistema/_lib/clock.ts` (`2026-11-11`) para que
   los datos sean deterministas entre servidor y cliente. En el sistema real se
   usa el reloj del servidor.
