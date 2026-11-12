@@ -9,8 +9,8 @@ export interface Discipline {
 export const DISCIPLINES: Discipline[] = [
   {
     name: "Arquería",
-    image: "/club/arqueria.jpg",
-    alt: "Mujer practicando arquería al aire libre",
+    image: "/club/arqueria-campo.jpg",
+    alt: "Dos arqueros del club tensando el arco frente a las dianas del campo de tiro",
     imageClassName: "photo-cover--archery",
     phone: "341 661 6556",
   },
