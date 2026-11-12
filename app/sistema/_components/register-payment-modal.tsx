@@ -19,6 +19,8 @@ import { useSystem } from "./use-system";
 interface RegisterPaymentModalProps {
   // Without a member, the modal starts with a member search.
   memberId?: string;
+  // Fees to select on top of the overdue ones.
+  includeFeeIds?: string[];
   onClose: () => void;
   // Called with the id of the receipt it issued, after closing.
   onRegistered?: (receiptId: string) => void;
@@ -26,14 +28,19 @@ interface RegisterPaymentModalProps {
 
 export function RegisterPaymentModal({
   memberId,
+  includeFeeIds,
   onClose,
   onRegistered,
 }: RegisterPaymentModalProps) {
   const { state } = useSystem();
-  const payment = useRegisterPayment(memberId, (receiptId) => {
-    onClose();
-    onRegistered?.(receiptId);
-  });
+  const payment = useRegisterPayment(
+    memberId,
+    (receiptId) => {
+      onClose();
+      onRegistered?.(receiptId);
+    },
+    includeFeeIds,
+  );
   const { member, account } = payment;
   const ratePercent = Math.round(state.settings.lateFeeRate * 100);
 

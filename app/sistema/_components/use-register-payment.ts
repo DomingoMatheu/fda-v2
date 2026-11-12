@@ -42,6 +42,8 @@ interface RegisterPayment {
 export function useRegisterPayment(
   initialMemberId: string | undefined,
   onDone: (receiptId: string) => void,
+  // Extra fees to start selected, e.g. the season pass from "Cobrar carnet".
+  includeFeeIds: string[] = [],
 ): RegisterPayment {
   const { state, registerPayment, notify } = useSystem();
 
@@ -66,9 +68,9 @@ export function useRegisterPayment(
     : undefined;
   const [memberId, setMemberId] = useState(initialMemberId);
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<string[]>(() =>
-    defaultSelection(initialMember),
-  );
+  const [selected, setSelected] = useState<string[]>(() => [
+    ...new Set([...defaultSelection(initialMember), ...includeFeeIds]),
+  ]);
   const member = memberId ? findMember(state.members, memberId) : undefined;
   const account = member && accountHolder(member, state);
   const [method, setMethod] = useState<PaymentMethod>(
