@@ -84,6 +84,9 @@ presupuesto y las fases siguientes.
   con vista previa del mail (monto, meses adeudados, cómo pagar) y registro de
   quién fue avisado y cuándo, para no avisar dos veces seguidas. En la demo el
   envío es simulado; en el sistema real sale desde el correo de cobranzas.
+- ✅ Caja del día: lo que entró por medio de pago (cuotas, entradas de
+  visitantes, alquileres y otros ingresos), cierre con conteo del efectivo y
+  diferencia contra lo esperado, historial de cierres e impresión.
 - Link de pago de Mercado Pago por cuota y conciliación automática por webhook:
   el socio paga desde el celular y la cuota se marca paga sola.
 - Débito automático con adhesión.
@@ -98,13 +101,15 @@ presupuesto y las fases siguientes.
 - ✅ Apto médico con vencimiento y alertas antes de que venza.
 - ✅ Registro de ingresos del día.
 - Carnet digital con QR en el celular del socio.
-- Cobro de entradas de visitantes (mayores, menores, autos, motos) con los
-  valores de `fees.ts`.
+- ✅ Cobro de entradas de visitantes (mayores, menores, autos, motos) con los
+  valores de `fees.ts`; cada entrada cae en la caja del día.
 
 **Socios y plan familiar**
 
 - ✅ Ficha única con datos, grupo familiar, disciplinas, pileta, cuenta y pagos.
 - ✅ Alta de socio que genera la inscripción y la primera cuota.
+- ✅ Edición de los datos del socio, con control de DNI repetido y registro
+  en la actividad.
 - Cambio de plan familiar sugerido por edad de los hijos (básico → pleno al
   cumplir 5; el hijo sale del grupo a los 18 y pasa a individual).
 - Portal de socios (autogestión): ver deuda, pagar, bajar comprobantes, subir
@@ -112,8 +117,12 @@ presupuesto y las fases siguientes.
 
 **Reservas** (hoy es una planilla a mano, según el FAQ)
 
-- Reservas de quinchos y del salón con calendario, lista de invitados no socios
-  (nombre, apellido, DNI) y cobro del 50 % de la entrada cuando corresponde.
+- ✅ Reservas de quinchos y del salón con calendario, lista de invitados no
+  socios (nombre, apellido, DNI) y cobro del 50 % de la entrada cuando
+  corresponde (uso exclusivo del quincho). El salón se alquila también a no
+  socios, con seña y saldo que entran a la caja.
+- ✅ Vista de portería con las reservas del día y búsqueda del invitado por
+  DNI, y planilla de invitados imprimible.
 
 **Disciplinas y empleados**
 
@@ -137,7 +146,7 @@ Los tipos ya están escritos en `app/sistema/_types/` y son el contrato para
 el schema de Prisma:
 
 - `member.ts`: `Member`, `FamilyGroup`, `Address`, `MedicalClearance`,
-  `NewMemberInput`. Categorías: individual, menor, jubilado, familiar (se cobra
+  `NewMemberInput`, `MemberChanges` (lo que se edita de la ficha). Categorías: individual, menor, jubilado, familiar (se cobra
   por el grupo), vitalicio (exento). Planes familiares: básico y pleno.
 - `billing.ts`: `Fee` (cuota: social, inscripción, disciplina, temporada),
   `Payment`, `Receipt`, `RegisterPaymentInput`, `MemberBalance`,
@@ -146,6 +155,12 @@ el schema de Prisma:
   guardado es pendiente, paga o anulada; "vencida" se deriva de la fecha de
   vencimiento, nunca se guarda.
 - `season.ts`: `Season`, `PoolPass`, `AccessLog`, `AccessCheck`.
+- `booking.ts`: `Venue`, `Booking` (espacio, fecha, turno día o noche,
+  responsable socio o no socio, invitados, importe y cuota asociada),
+  `BookingGuest`, `NewBookingInput`, `BookingChanges`.
+- `cash.ts`: `OtherIncome` (ingreso que no es cuota: entrada de visitante,
+  alquiler, otro), `CashClosing` (cierre del día: esperado por medio de pago,
+  efectivo contado y diferencia), `NewIncomeInput`, `NewClosingInput`.
 - `staff.ts`: `Employee`, `DisciplineProgram` (la disciplina de la landing más
   cuota, horario y responsable), `Enrollment`.
 - `auth.ts`: `SystemUser`, `UserRole`, `Permission`, `ActivityEntry`.

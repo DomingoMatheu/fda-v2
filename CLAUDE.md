@@ -111,9 +111,9 @@ if not, it is deleted and the landing stays as is.
   `globals.css`). Reuse the landing's tokens, fonts, `club-info.ts`,
   `disciplines.ts`, `fees.ts`, `whatsapp.ts` and hooks instead of copying them.
 - `app/sistema/_types/` is the domain contract (members, family groups, fees,
-  payments, receipts, pool season, access control, employees, disciplines,
-  users, roles). The API's DTOs and Prisma schema follow it; change it with
-  care and keep both sides in sync.
+  payments, receipts, debt notices, pool season, access control, bookings,
+  the cash register, employees, disciplines, users, roles). The API's DTOs and
+  Prisma schema follow it; change it with care and keep both sides in sync.
 - `/sistema` is `noindex`, out of the sitemap and disallowed in `robots.ts`.
 - Demo conventions: fixed "today" in `_lib/clock.ts`, Context + `useReducer`
   store (`SystemProvider`, `useSystem()`) saved in the visitor's

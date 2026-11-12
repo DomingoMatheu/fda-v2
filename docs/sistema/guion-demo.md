@@ -1,4 +1,4 @@
-# Guion de la demo del sistema (10 minutos)
+# Guion de la demo del sistema (14 minutos)
 
 Para mostrarle al club la demo de `/sistema`. Los socios y DNI de abajo salen
 de los datos de prueba, que son siempre los mismos. Lo que cargues queda
@@ -39,6 +39,9 @@ usan la clave `matheu2026`.
 - El badge pasa a **Al día** al instante. Abrí el recibo desde el estado de
   cuenta: numerado (`0001-0000…`), con los datos del club, el detalle y quién
   lo cobró. Mostrá **Imprimir** (vista previa sin menú).
+- **Editar datos**: cambiá el teléfono o el correo y guardá; queda anotado en
+  la actividad. Si probás poner el DNI de otro socio (por ejemplo el de
+  Federico), avisa de quién es y no deja guardar.
 
 ## 3. Cobranza (1 min 30 s)
 
@@ -55,10 +58,23 @@ usan la clave `matheu2026`.
   Avisá que en la demo el envío es simulado.
 - **Registrar cobro** general: buscás al socio desde el mismo modal.
 
+## 3 bis. Caja del día (1 min 30 s)
+
+- "Lo que entró hoy, por medio de pago": total del día, efectivo que tiene
+  que haber en la caja, cobros de cuotas y otros ingresos. El cobro de
+  Federico ya aparece en los movimientos, con su recibo y quién lo cobró.
+- **Registrar otro ingreso**: una seña, una venta de la cantina, lo que no es
+  cuota.
+- **Cerrar caja**: se cuenta el efectivo (total o por billetes) y el sistema
+  muestra al toque si hay **sobrante** o **faltante** contra lo esperado.
+- Elegí el **sábado 07/11** en el selector de días: cerró con un faltante de
+  $ 500 y la nota de quién lo revisa. **Historial de cierres** lista todos los
+  días, con su diferencia, y se puede imprimir el resumen.
+
 ## 4. Temporada y portería (2 min 30 s)
 
 Mejor desde el celular, con el usuario **porteria**: mostrá que solo ve
-Inicio, Socios, Grupos familiares, Temporada y Disciplinas.
+Inicio, Socios, Grupos familiares, Temporada, Reservas y Disciplinas.
 
 - **Control de ingreso**, "Portería tipea el DNI y ve verde o rojo":
   - **31405830** (Valentino Ríos): **HABILITADO**. Registrá el ingreso.
@@ -70,10 +86,33 @@ Inicio, Socios, Grupos familiares, Temporada y Disciplinas.
     Secretaría aparece el atajo **Registrar cobro** ahí mismo).
   - **40123456**: no es socio. Ofrece la entrada como visitante con los
     precios de la landing (con el usuario de Secretaría ofrece también el
-    alta).
+    alta). La entrada que se cobra cae sola en la **Caja del día**.
 - **Ingresos de hoy**: los que entraron y los que no, con el motivo.
 - **Carnets**: carnets emitidos, pagos y pendientes, y quién no tiene apto.
   Por ejemplo **35930933** (Diego Galli) tiene el carnet sin pagar.
+
+## 4 bis. Reservas de quinchos y salón (2 min)
+
+Primero, todavía con **porteria**:
+
+- **Reservas → Hoy (portería)**: hoy **Valentino Ríos** tiene el quincho
+  grande. Tipeá el DNI **42295546**: **Isabella Moretti** está en su lista de
+  invitados. Si alguien no figura, el sistema le dice que pague la entrada de
+  visitante.
+
+Después, con **secretaria**:
+
+- **Calendario** de noviembre con cada espacio y turno (día y noche), libre,
+  pendiente o confirmado. "Se terminó la planilla a mano."
+- Abrí la del **21/11** (Marcelo Giménez): quincho grande con **uso
+  exclusivo** y 34 invitados, por eso paga la mitad de la entrada de cada uno,
+  cargada a su cuenta de socio.
+- La del **28/11** (Agustina Paredes, no socia): salón de noche con la seña
+  cobrada y el saldo pendiente. Cobrar el saldo lo manda a la caja.
+- **Nueva reserva**: elegí el quincho grande el 11/11 y mostrá que el turno
+  de día figura **Ocupado** por Valentino. Cambiá a otra fecha, elegí al
+  socio, pegá la lista de invitados y guardá. La planilla para portería se
+  imprime desde la reserva.
 
 ## 5. Grupos familiares (45 s)
 
@@ -99,8 +138,7 @@ Salí y entrá con **admin**.
 > real. Lo que sigue, si les sirve: migramos sus socios del sistema actual,
 > y después sumamos el link de pago de Mercado Pago para que la cuota se
 > marque paga sola, los recordatorios automáticos por WhatsApp, el portal
-> para que cada socio vea su deuda y baje sus recibos, y las reservas de
-> quinchos y salón."
+> para que cada socio vea su deuda y baje sus recibos."
 
 Las tarjetas de **Integraciones** en Configuración (Mercado Pago, WhatsApp,
 email, facturación electrónica, backups) sirven de apoyo para esa frase. Las
