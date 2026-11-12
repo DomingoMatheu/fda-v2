@@ -1,1 +1,202 @@
 /* Comprobantes y recibo */
+.sys-receipts__number {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.sys-receipts__count {
+  color: var(--sys-muted);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.sys-receipts__missing {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  max-width: 60ch;
+}
+
+/* ───────── Receipt ───────── */
+.sys-receipt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.sys-receipt-actions .sys-button--primary {
+  margin-left: auto;
+}
+.sys-receipt {
+  max-width: 780px;
+  padding: 36px 40px;
+  background: var(--sys-surface);
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius);
+  box-shadow: var(--sys-shadow);
+}
+.sys-receipt__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 2px solid var(--green-deep);
+}
+.sys-receipt__club {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sys-receipt__crest {
+  flex: none;
+}
+.sys-receipt__club-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+.sys-receipt__club-data {
+  font-size: 13px;
+  color: var(--sys-muted);
+}
+.sys-receipt__id {
+  text-align: end;
+}
+.sys-receipt__kind {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sys-muted);
+}
+.sys-receipt__number {
+  font-family: var(--f-mono);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 2px 0;
+}
+.sys-receipt__date {
+  font-size: 14px;
+}
+
+.sys-receipt__member,
+.sys-receipt__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 32px;
+  margin: 22px 0;
+}
+.sys-receipt__member dt,
+.sys-receipt__meta dt {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sys-muted);
+}
+.sys-receipt__member dd,
+.sys-receipt__meta dd {
+  margin: 2px 0 0;
+  font-weight: 700;
+}
+.sys-receipt__member div:first-child dd {
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sys-receipt__items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.sys-receipt__items th,
+.sys-receipt__items td {
+  padding: 10px 0;
+  text-align: start;
+  border-bottom: 1px solid var(--sys-border);
+}
+.sys-receipt__items thead th {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sys-muted);
+}
+.sys-receipt__items .is-end {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  padding-left: 16px;
+  white-space: nowrap;
+}
+.sys-receipt__items tfoot th,
+.sys-receipt__items tfoot td {
+  border-bottom: none;
+  border-top: 2px solid var(--green-deep);
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 20px;
+}
+.sys-receipt__note {
+  padding-top: 16px;
+  border-top: 1px dashed var(--sys-border);
+  font-size: 12.5px;
+  color: var(--sys-muted);
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .sys-receipt {
+    padding: 22px 18px;
+  }
+  .sys-receipt__id {
+    text-align: start;
+  }
+  .sys-receipt-actions .sys-button--primary {
+    margin-left: 0;
+  }
+}
+
+/* ───────── Print: only the receipt ───────── */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  .sys:has(.sys-receipt) {
+    background: #fff;
+    min-height: 0;
+  }
+  .sys:has(.sys-receipt)
+    :is(
+      .sys-sidebar,
+      .sys-backdrop,
+      .sys-topbar,
+      .sys-toaster,
+      .sys-receipt-actions
+    ) {
+    display: none !important;
+  }
+  .sys-app:has(.sys-receipt) {
+    display: block;
+  }
+  .sys-app:has(.sys-receipt) .sys-content {
+    max-width: none;
+    padding: 0;
+  }
+  .sys-receipt {
+    max-width: none;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .sys-receipt__head {
+    flex-wrap: nowrap;
+  }
+  .sys-receipt__id {
+    text-align: end;
+  }
+}
