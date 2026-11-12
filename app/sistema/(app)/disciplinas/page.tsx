@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../../_components/module-placeholder";
+import { DisciplinesView } from "../../_components/disciplines-view";
 
 export const metadata: Metadata = { title: "Disciplinas" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema/disciplinas" />;
+  return <DisciplinesView />;
 }

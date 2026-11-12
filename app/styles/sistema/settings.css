@@ -1,1 +1,186 @@
-/* Configuración */
+/* ───────── Settings ───────── */
+.sys-settings {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.sys-settings__section + .sys-settings__section {
+  margin-top: 16px;
+}
+.sys-settings__section .sys-card__title {
+  margin-bottom: 4px;
+}
+.sys-settings__help {
+  color: var(--sys-muted);
+  font-size: 14px;
+}
+.sys-settings__section > .sys-settings__help {
+  margin-bottom: 14px;
+}
+.sys-settings > *,
+.sys-settings__pair > * {
+  min-width: 0;
+}
+.sys-table.sys-settings__fees tbody th {
+  font-family: var(--f-body);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  background: none;
+  white-space: normal;
+}
+.sys-settings__money-label {
+  display: none;
+}
+.sys-settings__money {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sys-muted);
+  font-weight: 700;
+}
+.sys-settings__money .sys-input {
+  width: 130px;
+  min-height: 40px;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.sys-settings__pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.sys-settings__pair .sys-settings__section + .sys-settings__section {
+  margin-top: 0;
+}
+.sys-settings__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+.sys-settings__methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sys-settings__method {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--sys-border);
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sys-settings__method:has(input:checked) {
+  border-color: var(--green);
+  background: var(--sys-ok-bg);
+}
+.sys-settings__method input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--green-deep);
+}
+.sys-settings__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px 12px;
+}
+.sys-settings__actions .sys-form__error {
+  flex-basis: 100%;
+}
+.sys-settings__status {
+  margin-right: auto;
+  color: var(--sys-muted);
+  font-size: 14px;
+}
+.sys-settings__you {
+  color: var(--sys-muted);
+}
+.sys-settings__username {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+}
+.sys-settings__heading {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+.sys-settings__integrations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.sys-settings__integration {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+.sys-settings__integration-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sys-settings__integration h3 {
+  font-size: 17px;
+  font-weight: 800;
+}
+.sys-settings__integration p {
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+@media (max-width: 560px) {
+  .sys-settings__fees thead {
+    display: none;
+  }
+  .sys-settings__fees tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--sys-border);
+  }
+  .sys-settings__fees tbody tr:last-child {
+    border-bottom: none;
+  }
+  .sys-table.sys-settings__fees tbody th {
+    grid-column: 1 / -1;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .sys-table.sys-settings__fees td {
+    border-bottom: none;
+    text-align: start;
+  }
+  .sys-settings__money {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 6px;
+  }
+  .sys-settings__money-label {
+    display: block;
+    grid-column: 1 / -1;
+    font-size: 12.5px;
+  }
+  .sys-settings__money .sys-input {
+    width: 100%;
+  }
+  .sys-settings__actions .sys-button {
+    flex: 1 1 0;
+  }
+}
+.sys-settings__login {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

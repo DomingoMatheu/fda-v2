@@ -1,1 +1,154 @@
-/* Empleados */
+/* ───────── Employees ───────── */
+.sys-employee__roles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.sys-employee__role {
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius-sm);
+  background: var(--sys-surface);
+  text-align: start;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.sys-employee__role:hover {
+  border-color: var(--green);
+}
+.sys-employee__role[aria-pressed="true"] {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: var(--cream);
+}
+.sys-employee__role-count {
+  font-family: var(--f-display);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.sys-employee__role-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.sys-employee__role[aria-pressed="false"] .sys-employee__role-label {
+  color: var(--sys-muted);
+}
+.sys-employee__status {
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 10px;
+}
+.sys-employee__summary {
+  color: var(--sys-muted);
+  font-size: 14px;
+}
+.sys-employee__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  text-align: start;
+}
+.sys-employee__chevron {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--sys-muted);
+  border-bottom: 2px solid var(--sys-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+.sys-employee__toggle[aria-expanded="true"] .sys-employee__chevron {
+  transform: rotate(45deg);
+}
+.sys-employee__table tr.is-open td {
+  background: #fbf8ec;
+  border-bottom-color: transparent;
+}
+.sys-employee__schedule {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+.sys-employee__contact a,
+.sys-employee__record a {
+  color: var(--green);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sys-employee__record-row td {
+  background: #fbf8ec;
+  padding-top: 4px;
+  padding-bottom: 18px;
+}
+.sys-employee__record {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px 24px;
+  padding-left: 18px;
+}
+.sys-employee__record dt {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sys-muted);
+}
+.sys-employee__record dd {
+  margin: 3px 0 0;
+}
+.sys-employee__muted {
+  color: var(--sys-muted);
+}
+.sys-employee__notes {
+  grid-column: 1 / -1;
+}
+@media (max-width: 720px) {
+  .sys-employee__record {
+    padding-left: 0;
+  }
+}
+.sys-employee__role-mobile {
+  display: none;
+}
+@media (max-width: 720px) {
+  .sys-employee__role-mobile {
+    display: block;
+    padding-left: 18px;
+    color: var(--sys-muted);
+    font-size: 13.5px;
+  }
+}
+@media (max-width: 560px) {
+  .sys-employee__roles {
+    display: flex;
+    overflow-x: auto;
+    margin-inline: -16px;
+    padding: 0 16px 4px;
+    scrollbar-width: none;
+  }
+  .sys-employee__role {
+    flex: 0 0 auto;
+    min-width: 96px;
+    padding: 8px 12px;
+  }
+  .sys-employee__role-count {
+    font-size: 20px;
+  }
+}
+.sys-employee__area {
+  display: block;
+  color: var(--sys-muted);
+  font-size: 13px;
+}
+@media (max-width: 1100px) {
+  .sys-table .sys-employee__wide {
+    display: none;
+  }
+}

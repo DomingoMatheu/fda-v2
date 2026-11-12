@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../../_components/module-placeholder";
+import { SettingsView } from "../../_components/settings-view";
 
 export const metadata: Metadata = { title: "Configuración" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema/configuracion" />;
+  return <SettingsView />;
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../../_components/module-placeholder";
+import { EmployeesView } from "../../_components/employees-view";
 
 export const metadata: Metadata = { title: "Empleados" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema/empleados" />;
+  return <EmployeesView />;
 }
