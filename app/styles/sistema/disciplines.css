@@ -1,1 +1,89 @@
-/* Disciplinas */
+/* ───────── Disciplines ───────── */
+.sys-discipline__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+.sys-discipline {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--sys-surface);
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius);
+  box-shadow: var(--sys-shadow);
+}
+.sys-discipline__open {
+  display: grid;
+  text-align: start;
+}
+.sys-discipline__photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: var(--green-deep);
+  overflow: hidden;
+}
+.sys-discipline__photo img {
+  transition: transform 0.3s ease;
+}
+.sys-discipline__open:hover .sys-discipline__photo img {
+  transform: scale(1.04);
+}
+.sys-discipline__count {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--green-deep);
+  font-size: 13.5px;
+}
+.sys-discipline__count strong {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.sys-discipline__name {
+  padding: 14px 16px 4px;
+  font-family: var(--f-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.sys-discipline__open:hover .sys-discipline__name {
+  color: var(--green);
+}
+.sys-discipline__facts {
+  margin: 0;
+  padding: 8px 16px 16px;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+.sys-discipline__facts div {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 8px;
+}
+.sys-discipline__facts dt {
+  color: var(--sys-muted);
+}
+.sys-discipline__facts dd {
+  margin: 0;
+}
+.sys-discipline__facts a {
+  color: var(--green);
+  font-weight: 600;
+}
+.sys-discipline__modal-summary {
+  color: var(--sys-muted);
+  margin-bottom: 14px;
+}
+.sys-discipline__member {
+  font-weight: 700;
+  color: var(--ink);
+}
+.sys-discipline__member:hover {
+  color: var(--green);
+}

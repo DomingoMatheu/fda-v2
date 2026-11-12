@@ -1,1 +1,179 @@
-/* Reportes */
+/* ───────── Reports ───────── */
+.sys-report {
+  display: grid;
+  gap: 18px;
+}
+.sys-report .sys-card__title {
+  margin-bottom: 4px;
+}
+.sys-report__description {
+  color: var(--sys-muted);
+}
+.sys-report__data summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--green);
+  padding: 4px 0;
+}
+.sys-report__data[open] summary {
+  margin-bottom: 10px;
+}
+.sys-report__totals td {
+  font-weight: 800;
+  background: var(--paper);
+  border-top: 1px solid var(--sys-border);
+}
+
+/* ───────── Charts ─────────
+   Colors validated with the dataviz palette checks (light surface, CVD
+   separation): green and yellow for series, green, amber and red for the
+   fee status. */
+.sys-chart {
+  --sys-chart-1: #2f7d45;
+  --sys-chart-2: #d9a91d;
+  --sys-chart-ok: #2f7d45;
+  --sys-chart-warn: #e0a419;
+  --sys-chart-danger: #c2412d;
+  --sys-chart-grid: #ebe6d6;
+  display: grid;
+  gap: 12px;
+}
+.sys-chart__tone--series-1,
+.sys-chart__tone--ok {
+  fill: var(--sys-chart-1);
+  background: var(--sys-chart-1);
+}
+.sys-chart__tone--series-2 {
+  fill: var(--sys-chart-2);
+  background: var(--sys-chart-2);
+}
+.sys-chart__tone--warn {
+  fill: var(--sys-chart-warn);
+  background: var(--sys-chart-warn);
+}
+.sys-chart__tone--danger {
+  fill: var(--sys-chart-danger);
+  background: var(--sys-chart-danger);
+}
+.sys-chart__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+.sys-chart__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.sys-chart__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.sys-chart__readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: var(--sys-radius-sm);
+  background: var(--paper);
+  font-size: 14px;
+  color: var(--sys-muted);
+}
+.sys-chart__readout-title {
+  font-weight: 700;
+  color: var(--ink);
+}
+.sys-chart__readout-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sys-chart__readout-item strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sys-chart__key {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+.sys-chart__frame {
+  overflow: hidden;
+}
+.sys-chart__svg {
+  display: block;
+  overflow: visible;
+}
+.sys-chart__svg text {
+  font-family: var(--f-body);
+  font-size: 12px;
+  fill: var(--sys-muted);
+}
+.sys-chart__grid line {
+  stroke: var(--sys-chart-grid);
+  stroke-width: 1;
+}
+.sys-chart__grid text {
+  text-anchor: end;
+  font-variant-numeric: tabular-nums;
+}
+.sys-chart__baseline,
+.sys-chart__track {
+  stroke: #c9c2ab;
+  stroke-width: 1;
+}
+.sys-chart__hit {
+  fill: transparent;
+}
+.sys-chart__slot {
+  cursor: pointer;
+  outline: none;
+}
+.sys-chart__slot.is-active .sys-chart__hit {
+  fill: var(--paper);
+}
+.sys-chart__slot:focus-visible .sys-chart__hit {
+  stroke: var(--green);
+  stroke-width: 2;
+}
+.sys-chart__svg .sys-chart__axis-label {
+  text-anchor: middle;
+}
+.sys-chart__svg .sys-chart__value {
+  text-anchor: middle;
+  font-weight: 700;
+  fill: var(--ink);
+}
+.sys-chart__svg .sys-chart__row-label {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+.sys-chart__svg .sys-chart__row-detail {
+  text-anchor: end;
+  font-size: 13px;
+}
+.sys-chart__svg .sys-chart__tip {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.sys-chart__svg .sys-chart__inside {
+  font-size: 12.5px;
+  font-weight: 700;
+  fill: #ffffff;
+  pointer-events: none;
+}
+.sys-chart__svg .sys-chart__inside--warn,
+.sys-chart__svg .sys-chart__inside--series-2 {
+  fill: var(--ink);
+}
