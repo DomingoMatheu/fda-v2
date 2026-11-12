@@ -356,7 +356,12 @@ export function buildSeed(): SystemState {
 
   // Some members left this year and two debtors were suspended.
   const leavers = rng
-    .shuffle(accounts.filter(({ category }) => category === "individual"))
+    .shuffle(
+      accounts.filter(
+        ({ category, joinedAt }) =>
+          category === "individual" && joinedAt < FIRST_PERIOD,
+      ),
+    )
     .slice(0, 3);
   for (const member of leavers) {
     member.status = "baja";
