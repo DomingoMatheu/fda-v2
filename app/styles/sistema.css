@@ -1,0 +1,16 @@
+/* Management system ("/sistema"). Imported only from app/sistema/layout.tsx,
+   so the landing never loads it. Every class is prefixed with "sys-". */
+@import "./sistema/base.css";
+@import "./sistema/components.css";
+@import "./sistema/shell.css";
+@import "./sistema/login.css";
+@import "./sistema/dashboard.css";
+@import "./sistema/members.css";
+@import "./sistema/family-groups.css";
+@import "./sistema/collections.css";
+@import "./sistema/receipts.css";
+@import "./sistema/season.css";
+@import "./sistema/employees.css";
+@import "./sistema/disciplines.css";
+@import "./sistema/reports.css";
+@import "./sistema/settings.css";

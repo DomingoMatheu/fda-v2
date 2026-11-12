@@ -6,6 +6,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      // The club's internal management system.
+      disallow: "/sistema",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
