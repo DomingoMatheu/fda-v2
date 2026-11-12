@@ -308,7 +308,7 @@ function buildClosings(
     closings.push({
       id: `cierre-${day}`,
       date: day,
-      closedAt: `${day}T19:45:00`,
+      closedAt: `${day}T21:15:00`,
       closedByUserId: "u-tesoreria",
       expected,
       countedCash: expected.efectivo - short,
