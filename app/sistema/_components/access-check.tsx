@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { VISITOR_FEES } from "@/app/_components/fees";
-import { CATEGORY_LABELS } from "../_data/labels";
+import { CATEGORY_LABELS, PAYMENT_METHOD_LABELS } from "../_data/labels";
 import { formatDocument, fullName } from "../_lib/format";
+import type { PaymentMethod } from "../_types";
 import { MemberStatusBadge } from "./status-badge";
 import {
   useAccessCheck,
@@ -170,6 +171,22 @@ function UnknownResult({
               </button>
             ))}
           </div>
+          <label className="sys-field">
+            <span className="sys-field__label">Cobrada en</span>
+            <select
+              className="sys-input"
+              value={gate.visitorMethod}
+              onChange={(event) =>
+                gate.setVisitorMethod(event.target.value as PaymentMethod)
+              }
+            >
+              {gate.visitorMethods.map((method) => (
+                <option key={method} value={method}>
+                  {PAYMENT_METHOD_LABELS[method]}
+                </option>
+              ))}
+            </select>
+          </label>
         </fieldset>
       )}
       <div className="sys-gate__actions">

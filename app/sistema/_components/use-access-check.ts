@@ -2,6 +2,8 @@
 
 import { useRef, useState, type RefObject } from "react";
 import { VISITOR_FEES, type VisitorFee } from "@/app/_components/fees";
+import { PAYMENT_METHOD_LABELS } from "../_data/labels";
+import { visitorFeeAmount } from "../_lib/cash";
 import { DEMO_TODAY } from "../_lib/clock";
 import { fullName } from "../_lib/format";
 import { can } from "../_lib/permissions";
@@ -14,7 +16,7 @@ import {
   visitorReason,
   type GateIssues,
 } from "../_lib/season";
-import type { AccessCheck, Member } from "../_types";
+import type { AccessCheck, Member, PaymentMethod } from "../_types";
 import { useSystem } from "./use-system";
 
 export type GateLookup =
@@ -34,6 +36,9 @@ export interface AccessCheckState {
   lookup: GateLookup;
   visitorFee: VisitorFee;
   setVisitorFee: (label: string) => void;
+  visitorMethod: PaymentMethod;
+  setVisitorMethod: (method: PaymentMethod) => void;
+  visitorMethods: PaymentMethod[];
   registerEntry: () => void;
   registerVisitor: () => void;
   canRegister: boolean;
@@ -46,12 +51,13 @@ export interface AccessCheckState {
 // The result is derived from the store on every render, so charging a fee
 // or loading a clearance from the shortcuts updates the card at once.
 export function useAccessCheck(): AccessCheckState {
-  const { state, user, recordAccess, notify } = useSystem();
+  const { state, user, recordAccess, registerIncome, notify } = useSystem();
   const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [searched, setSearched] = useState("");
   const [visitorLabel, setVisitorLabel] = useState(VISITOR_FEES[0].label);
+  const [visitorMethod, setVisitorMethod] = useState<PaymentMethod>("efectivo");
   const canManageSeason = can(user, "season:write");
 
   const member = findMemberAtGate(state.members, searched);
@@ -98,6 +104,9 @@ export function useAccessCheck(): AccessCheckState {
     lookup,
     visitorFee,
     setVisitorFee: setVisitorLabel,
+    visitorMethod,
+    setVisitorMethod,
+    visitorMethods: state.settings.paymentMethods,
     registerEntry: () => {
       if (lookup.kind !== "member") return;
       const { check } = lookup;
@@ -124,8 +133,15 @@ export function useAccessCheck(): AccessCheckState {
         result: "permitido",
         reason: visitorReason(visitorFee),
       });
+      // The entrance fee goes into today's cash register.
+      registerIncome({
+        source: "visitante",
+        description: `Entrada de visitante (${visitorFee.label.toLowerCase()})`,
+        amount: visitorFeeAmount(visitorFee),
+        method: visitorMethod,
+      });
       notify(
-        `Visitante registrado (${visitorFee.label}, ${visitorFee.amount}).`,
+        `Visitante registrado (${visitorFee.label}, ${visitorFee.amount}, ${PAYMENT_METHOD_LABELS[visitorMethod]}).`,
         "success",
       );
       clear();

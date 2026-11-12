@@ -1,1 +1,444 @@
 /* Caja del día */
+.sys-cash__day,
+.sys-cash__history {
+  display: grid;
+  gap: 20px;
+}
+.sys-cash__day > .sys-stats {
+  margin-bottom: 0;
+}
+
+/* Only on paper: the club's name and the day. */
+.sys-cash__print-head {
+  display: none;
+}
+
+/* ───────── Day picker and actions ───────── */
+.sys-cash__daybar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.sys-cash__daypicker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.sys-cash__daypicker .sys-input {
+  width: auto;
+  min-width: 190px;
+}
+.sys-cash__daypicker .sys-icon-button {
+  font-size: 22px;
+  line-height: 1;
+}
+.sys-cash__daypicker .sys-icon-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.sys-cash__daypicker .sys-badge {
+  margin-inline-start: 6px;
+}
+.sys-cash__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ───────── By payment method and closing ───────── */
+.sys-cash__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+.sys-cash__method-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.sys-cash__method {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+.sys-cash__method-amount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.sys-cash__method-bar {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--sys-neutral-bg);
+  overflow: hidden;
+}
+.sys-cash__method-bar::before {
+  content: "";
+  display: block;
+  width: var(--share);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green);
+  transform-origin: left;
+  animation: sys-grow-x 600ms var(--sys-ease-out) backwards;
+}
+.sys-cash__method.is-total {
+  padding-top: 10px;
+  border-top: 1px solid var(--sys-border);
+  font-weight: 700;
+}
+
+.sys-cash__closing {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+.sys-cash__closing-text {
+  color: var(--ink-soft);
+}
+.sys-cash__closing-list {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.sys-cash__closing-list > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.sys-cash__closing-list dt {
+  color: var(--sys-muted);
+}
+.sys-cash__closing-list dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sys-cash__notes {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.sys-cash__late {
+  padding: 10px 12px;
+  border-radius: var(--sys-radius-sm);
+  background: var(--sys-warn-bg);
+  color: var(--sys-warn);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ───────── Movements and history ───────── */
+.sys-cash__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.sys-cash__count {
+  font-size: 14px;
+  color: var(--sys-muted);
+}
+.sys-cash__filters {
+  margin-bottom: 0;
+}
+.sys-cash__movements {
+  display: grid;
+  gap: 12px;
+}
+.sys-cash__time {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.sys-cash__late-badge {
+  justify-self: start;
+  margin-block: 2px;
+}
+.sys-cash__concept {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.sys-cash__origin {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sys-muted);
+}
+.sys-cash__receipt {
+  justify-self: start;
+  font-size: 13px;
+  color: var(--green);
+}
+.sys-cash__mobile-meta {
+  display: none;
+  font-size: 13px;
+  color: var(--sys-muted);
+}
+.sys-cash__amount {
+  font-weight: 700;
+  white-space: nowrap;
+}
+.sys-cash__day-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--green);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sys-cash__closed-by {
+  display: grid;
+}
+.sys-cash__closed-by span {
+  font-size: 12.5px;
+  color: var(--sys-muted);
+}
+
+/* ───────── Modals ───────── */
+.sys-cash__hint {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.sys-cash__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.sys-cash-close__expected {
+  margin: 8px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+}
+.sys-cash-close__expected > div {
+  padding: 10px 12px;
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius-sm);
+  background: var(--paper);
+}
+.sys-cash-close__expected dt {
+  font-size: 12.5px;
+  color: var(--sys-muted);
+}
+.sys-cash-close__expected dd {
+  margin: 2px 0 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sys-cash-close__expected .is-total {
+  background: var(--sys-surface);
+  border-color: var(--green);
+}
+.sys-cash-close__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sys-cash-close__toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green);
+}
+.sys-cash-close__bills {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.sys-cash-close__bill {
+  display: grid;
+  grid-template-columns: 90px 110px 1fr;
+  align-items: center;
+  gap: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.sys-cash-close__bill .sys-input {
+  min-height: 38px;
+  text-align: end;
+}
+.sys-cash-close__subtotal {
+  text-align: end;
+  color: var(--sys-muted);
+}
+.sys-cash-close__result {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: var(--sys-radius-sm);
+  background: var(--sys-neutral-bg);
+  color: var(--sys-neutral);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+.sys-cash-close__result.is-over {
+  background: var(--sys-info-bg);
+  color: var(--sys-info);
+}
+.sys-cash-close__result.is-short {
+  background: var(--sys-danger-bg);
+  color: var(--sys-danger);
+}
+.sys-cash-close__result.is-even {
+  background: var(--sys-ok-bg);
+  color: var(--sys-ok);
+}
+.sys-cash-close__difference {
+  font-size: 18px;
+  font-weight: 800;
+}
+.sys-cash-close__notes {
+  min-height: 64px;
+  padding-block: 10px;
+  resize: vertical;
+}
+
+@media (max-width: 860px) {
+  .sys-cash__grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 720px) {
+  .sys-cash__mobile-meta {
+    display: block;
+  }
+  .sys-cash .sys-table th,
+  .sys-cash .sys-table td {
+    padding-inline: 10px;
+  }
+  /* The status is on the card below and in the day's label. */
+  .sys-cash__daypicker .sys-badge {
+    display: none;
+  }
+  .sys-cash__daypicker {
+    flex: 1 1 100%;
+  }
+  .sys-cash__daypicker .sys-input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+  }
+}
+@media (max-width: 560px) {
+  .sys-cash__actions,
+  .sys-cash__actions .sys-button {
+    flex: 1 1 auto;
+  }
+  .sys-cash__form-row {
+    grid-template-columns: 1fr;
+  }
+  .sys-cash-close__bill {
+    grid-template-columns: 80px 1fr auto;
+  }
+}
+
+/* ───────── Printed summary ───────── */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  .sys:has(.sys-cash) {
+    background: #fff;
+    min-height: 0;
+  }
+  .sys:has(.sys-cash)
+    :is(
+      .sys-sidebar,
+      .sys-backdrop,
+      .sys-topbar,
+      .sys-toaster,
+      .sys-modal,
+      .sys-page-header,
+      .sys-cash__tabs,
+      .sys-cash__daybar,
+      .sys-cash__filters,
+      .sys-cash__mobile-meta,
+      .sys-billing-member__detail
+    ) {
+    display: none !important;
+  }
+  .sys-app:has(.sys-cash) {
+    display: block;
+  }
+  .sys-app:has(.sys-cash) .sys-content {
+    max-width: none;
+    padding: 0;
+  }
+  /* A4 is narrower than the phone breakpoint: keep every column. */
+  .sys-cash .sys-table .is-hidden-mobile {
+    display: table-cell;
+  }
+  .sys-cash *,
+  .sys-cash *::before {
+    animation: none !important;
+  }
+  .sys-cash__print-head {
+    display: grid;
+    gap: 2px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .sys-cash__print-head p {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .sys-cash__print-head h2 {
+    font-size: 20px;
+  }
+  .sys-cash__day {
+    gap: 14px;
+  }
+  .sys-cash .sys-stats {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .sys-cash .sys-stat {
+    padding: 10px 12px;
+  }
+  .sys-cash .sys-stat__value {
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  .sys-cash .sys-stat__label {
+    font-size: 9px;
+  }
+  .sys-cash .sys-card,
+  .sys-cash .sys-stat {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  .sys-cash__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sys-cash .sys-table {
+    font-size: 12px;
+  }
+  .sys-cash .sys-table th,
+  .sys-cash .sys-table td {
+    padding: 6px 8px;
+  }
+  .sys-cash .sys-table-wrap {
+    overflow: visible;
+  }
+  .sys-cash__receipt {
+    color: inherit;
+    text-decoration: none;
+  }
+}
