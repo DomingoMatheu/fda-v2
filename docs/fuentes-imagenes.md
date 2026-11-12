@@ -19,7 +19,7 @@ Las fotos de actividades y del festejo muestran momentos concretos, y la foto de
 
 | Archivo | Contenido y uso |
 | --- | --- |
-| `arqueria-campo.jpg` | Dos arqueros del club apuntando en el campo de tiro; tarjeta Arquería. Reemplazó a `arqueria.jpg`. |
+| `arqueria-campo.jpg` | Dos arqueros del club apuntando en el campo de tiro; tarjeta Tiro con arco. Reemplazó a `arqueria.jpg`. |
 | `entrenamiento-funcional.jpg` | Elementos de entrenamiento en el salón; tarjeta Entrenamiento funcional |
 | `wing-chun-recortado.jpg` | Practicante de Wing Chun; tarjeta Wing Chun. Se recortó una de las dos figuras repetidas de la imagen original. |
 | `ultimate.jpg` | Partido de ultimate; tarjeta Ultimate Frisbee |
