@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../../_components/module-placeholder";
+import { CashView } from "../../_components/cash-view";
 
 export const metadata: Metadata = { title: "Caja del día" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema/caja" />;
+  return <CashView />;
 }
