@@ -1,5 +1,8 @@
 import type {
   ActivityKind,
+  BookingStatus,
+  IncomeSource,
+  Member,
   EmployeeRole,
   EmploymentType,
   FamilyPlan,
@@ -98,10 +101,39 @@ export const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
 export const ACTIVITY_LABELS: Record<ActivityKind, string> = {
   pago: "Cobro",
   aviso: "Aviso",
+  reserva: "Reserva",
+  caja: "Caja",
   alta: "Alta",
   baja: "Baja",
   carnet: "Carnet",
   apto: "Apto médico",
   ingreso: "Ingreso",
   edicion: "Edición",
+};
+
+export const BOOKING_STATUS_LABELS: Record<BookingStatus, string> = {
+  pendiente: "Pendiente",
+  confirmada: "Confirmada",
+  cancelada: "Cancelada",
+};
+
+export const INCOME_SOURCE_LABELS: Record<IncomeSource, string> = {
+  visitante: "Entrada de visitante",
+  alquiler: "Alquiler",
+  otro: "Otro ingreso",
+};
+
+// Names of the member fields that can be edited, for the activity log.
+export const MEMBER_FIELD_LABELS: Partial<Record<keyof Member, string>> = {
+  firstName: "nombre",
+  lastName: "apellido",
+  documentNumber: "DNI",
+  birthDate: "fecha de nacimiento",
+  gender: "género",
+  email: "correo",
+  phone: "teléfono",
+  address: "domicilio",
+  category: "categoría",
+  preferredPaymentMethod: "medio de pago",
+  notes: "notas",
 };

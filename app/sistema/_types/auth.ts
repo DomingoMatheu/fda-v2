@@ -10,6 +10,8 @@ export type Permission =
   | "billing:write"
   | "season:read"
   | "season:write"
+  | "bookings:read"
+  | "bookings:write"
   | "staff:read"
   | "staff:write"
   | "reports:read"
@@ -37,6 +39,8 @@ export interface LoginState {
 export type ActivityKind =
   | "pago"
   | "aviso"
+  | "reserva"
+  | "caja"
   | "alta"
   | "baja"
   | "carnet"

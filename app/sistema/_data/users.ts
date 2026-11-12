@@ -50,6 +50,8 @@ const ALL_PERMISSIONS: Permission[] = [
   "billing:write",
   "season:read",
   "season:write",
+  "bookings:read",
+  "bookings:write",
   "staff:read",
   "staff:write",
   "reports:read",
@@ -65,6 +67,8 @@ export const PERMISSIONS_BY_ROLE: Record<UserRole, Permission[]> = {
     "billing:write",
     "season:read",
     "season:write",
+    "bookings:read",
+    "bookings:write",
     "staff:read",
     "reports:read",
   ],
@@ -73,9 +77,11 @@ export const PERMISSIONS_BY_ROLE: Record<UserRole, Permission[]> = {
     "billing:read",
     "billing:write",
     "season:read",
+    "bookings:read",
     "reports:read",
   ],
-  porteria: ["members:read", "season:read", "season:write"],
+  // The gate checks today's bookings and their guest lists.
+  porteria: ["members:read", "season:read", "season:write", "bookings:read"],
 };
 
 export function findUser(username: string): SystemUser | undefined {

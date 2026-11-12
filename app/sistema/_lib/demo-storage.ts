@@ -8,7 +8,7 @@ export const DEMO_STORAGE_KEY = "fda-sistema-demo";
 
 // Bump it when the seed or the shape of SystemState changes, so browsers
 // holding older data start over instead of breaking.
-export const DEMO_DATA_VERSION = 1;
+export const DEMO_DATA_VERSION = 2;
 
 interface StoredDemo {
   version: number;

@@ -5,6 +5,11 @@ import type { SystemSettings } from "../_data/settings";
 import type { SystemState } from "../_lib/state";
 import type {
   AccessLog,
+  BookingChanges,
+  MemberChanges,
+  NewBookingInput,
+  NewClosingInput,
+  NewIncomeInput,
   MedicalClearance,
   MemberStatus,
   NewMemberInput,
@@ -36,6 +41,13 @@ export interface SystemContextValue {
   recordAccess: (log: Omit<AccessLog, "id" | "at">) => void;
   setMemberStatus: (memberId: string, status: MemberStatus) => void;
   updateSettings: (settings: SystemSettings) => void;
+  // Returns the id of the new booking.
+  createBooking: (input: NewBookingInput) => string;
+  updateBooking: (bookingId: string, changes: BookingChanges) => void;
+  // Returns the id of the new income.
+  registerIncome: (input: NewIncomeInput) => string;
+  closeCash: (input: NewClosingInput) => void;
+  updateMember: (memberId: string, changes: MemberChanges) => void;
   // Forgets everything saved in this browser and starts from the seed.
   resetDemo: () => void;
   // Emails a debt notice to the debtors picked that have an address and

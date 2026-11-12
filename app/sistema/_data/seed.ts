@@ -42,6 +42,7 @@ import {
   PHYSICIANS,
   STREETS,
 } from "./names";
+import { addSeedExtras } from "./seed-extras";
 import { DEFAULT_SETTINGS, DUE_DAY } from "./settings";
 
 // Builds the demo's starting data. Everything comes from one seeded random
@@ -660,6 +661,9 @@ export function buildSeed(): SystemState {
     fees,
     payments,
     notices: [],
+    bookings: [],
+    incomes: [],
+    cashClosings: [],
     receipts,
     seasons: SEASONS,
     poolPasses,
@@ -668,6 +672,7 @@ export function buildSeed(): SystemState {
     settings: DEFAULT_SETTINGS,
   };
 
+  addSeedExtras(state);
   state.notices = buildNotices(state);
   state.accessLogs = buildAccessLogs(rng, state, passHolders);
   state.activity = buildActivity(state);

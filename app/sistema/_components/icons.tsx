@@ -56,6 +56,8 @@ const PATHS: Record<IconName, string[]> = {
     "M10 17l-5-5 5-5",
     "M5 12h11",
   ],
+  calendar: ["M4 6h16v15H4z", "M4 10h16", "M8 3v4M16 3v4", "M8 14h3v3H8z"],
+  register: ["M4 11h16v9H4z", "M6 11V5h12v6", "M9 8h6", "M8 15h2M14 15h2"],
   mail: ["M3 6h18v12H3z", "m3 7 9 6 9-6"],
   lock: ["M6 11h12v10H6z", "M8.5 11V7.5a3.5 3.5 0 0 1 7 0V11"],
 };

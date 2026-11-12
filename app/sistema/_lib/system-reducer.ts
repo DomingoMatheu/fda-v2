@@ -1,7 +1,18 @@
 import type { SystemSettings } from "../_data/settings";
 import { findProgram } from "../_data/disciplines";
+import {
+  BOOKING_STATUS_LABELS,
+  INCOME_SOURCE_LABELS,
+  MEMBER_FIELD_LABELS,
+} from "../_data/labels";
+import { findVenue } from "../_data/venues";
 import type {
   AccessLog,
+  BookingChanges,
+  MemberChanges,
+  NewBookingInput,
+  NewClosingInput,
+  NewIncomeInput,
   ActivityEntry,
   Fee,
   MedicalClearance,
@@ -21,7 +32,7 @@ import {
   surchargeFor,
 } from "./billing";
 import { addDays, DEMO_TODAY } from "./clock";
-import { formatMoney, fullName } from "./format";
+import { formatDate, formatMoney, fullName } from "./format";
 import { periodDueDate, periodLabel, periodOf } from "./period";
 import { activePass, currentSeason } from "./pool-access";
 import type { SystemState } from "./state";
@@ -54,6 +65,19 @@ export type SystemAction =
     })
   | (Stamp & { type: "updateSettings"; settings: SystemSettings })
   | (Stamp & { type: "sendDebtNotices"; memberIds: string[] })
+  | (Stamp & { type: "createBooking"; input: NewBookingInput })
+  | (Stamp & {
+      type: "updateBooking";
+      bookingId: string;
+      changes: BookingChanges;
+    })
+  | (Stamp & { type: "registerIncome"; input: NewIncomeInput })
+  | (Stamp & { type: "closeCash"; input: NewClosingInput })
+  | (Stamp & {
+      type: "updateMember";
+      memberId: string;
+      changes: MemberChanges;
+    })
   // Puts back what the browser had saved, or the seed when starting over.
   | { type: "replaceState"; state: SystemState };
 
@@ -324,6 +348,179 @@ function sendDebtNotices(
   };
 }
 
+// Ids are numbered by position: lists only grow, so they never repeat.
+export function nextBookingId(state: SystemState): string {
+  return `reserva-${state.bookings.length + 1}`;
+}
+
+export function nextIncomeId(state: SystemState): string {
+  return `otro-ingreso-${state.incomes.length + 1}`;
+}
+
+// A paid booking of a member is billed to their account as a fee, so it is
+// charged like any other fee.
+function createBooking(
+  state: SystemState,
+  action: Extract<SystemAction, { type: "createBooking" }>,
+): SystemState {
+  const { input } = action;
+  const venue = findVenue(input.venueId);
+  const member = input.memberId && findMember(state, input.memberId);
+  const id = nextBookingId(state);
+  const fee: Fee | undefined =
+    member && input.amount > 0
+      ? {
+          id: `cuota-${state.fees.length + 1}`,
+          memberId: billingMemberId(member, state.familyGroups),
+          familyGroupId: member.familyGroupId,
+          period: periodOf(DEMO_TODAY),
+          concept: "otro",
+          description: `Reserva ${venue?.name ?? ""} · ${formatDate(input.date)}`,
+          amount: input.amount,
+          dueDate:
+            input.date < DEMO_TODAY ? addDays(DEMO_TODAY, 10) : input.date,
+          status: "pendiente",
+          createdAt: DEMO_TODAY,
+        }
+      : undefined;
+
+  return {
+    ...state,
+    fees: fee ? [...state.fees, fee] : state.fees,
+    bookings: [
+      ...state.bookings,
+      {
+        ...input,
+        id,
+        status: "pendiente",
+        feeId: fee?.id,
+        createdAt: action.at,
+        createdByUserId: action.userId,
+      },
+    ],
+    activity: withActivity(state, action, {
+      kind: "reserva",
+      summary: `Reserva de ${venue?.name ?? "un espacio"} para el ${formatDate(input.date)} (${input.contactName})`,
+      memberId: input.memberId,
+    }),
+  };
+}
+
+function updateBooking(
+  state: SystemState,
+  action: Extract<SystemAction, { type: "updateBooking" }>,
+): SystemState {
+  const booking = state.bookings.find(({ id }) => id === action.bookingId);
+  if (!booking) return state;
+  const { changes } = action;
+  const venue = findVenue(booking.venueId);
+  const cancelled = changes.status === "cancelada";
+  const summary = changes.status
+    ? `Reserva de ${venue?.name ?? "un espacio"} del ${formatDate(booking.date)}: ${BOOKING_STATUS_LABELS[changes.status].toLowerCase()}`
+    : `Reserva de ${venue?.name ?? "un espacio"} del ${formatDate(booking.date)} actualizada`;
+
+  return {
+    ...state,
+    bookings: state.bookings.map((item) =>
+      item.id === booking.id ? { ...item, ...changes } : item,
+    ),
+    // Cancelling drops the charge if it was not paid yet.
+    fees: cancelled
+      ? state.fees.map((fee) =>
+          fee.id === booking.feeId && fee.status === "pendiente"
+            ? { ...fee, status: "anulada" }
+            : fee,
+        )
+      : state.fees,
+    activity: withActivity(state, action, {
+      kind: "reserva",
+      summary,
+      memberId: booking.memberId,
+    }),
+  };
+}
+
+function registerIncome(
+  state: SystemState,
+  action: Extract<SystemAction, { type: "registerIncome" }>,
+): SystemState {
+  const { input } = action;
+  return {
+    ...state,
+    incomes: [
+      ...state.incomes,
+      {
+        ...input,
+        id: nextIncomeId(state),
+        at: action.at,
+        registeredByUserId: action.userId,
+      },
+    ],
+    activity: withActivity(state, action, {
+      kind: "caja",
+      summary: `${INCOME_SOURCE_LABELS[input.source]}: ${input.description} (${formatMoney(input.amount)})`,
+    }),
+  };
+}
+
+// One closing per day: closing again replaces the previous count.
+function closeCash(
+  state: SystemState,
+  action: Extract<SystemAction, { type: "closeCash" }>,
+): SystemState {
+  const { input } = action;
+  const closing = {
+    ...input,
+    id: `cierre-${input.date}`,
+    closedAt: action.at,
+    closedByUserId: action.userId,
+  };
+  const difference =
+    input.difference === 0
+      ? "sin diferencias"
+      : `diferencia de ${formatMoney(input.difference)}`;
+  return {
+    ...state,
+    cashClosings: [
+      ...state.cashClosings.filter(({ date }) => date !== input.date),
+      closing,
+    ],
+    activity: withActivity(state, action, {
+      kind: "caja",
+      summary: `Cierre de caja del ${formatDate(input.date)}, ${difference}`,
+    }),
+  };
+}
+
+function editMember(
+  state: SystemState,
+  action: Extract<SystemAction, { type: "updateMember" }>,
+): SystemState {
+  const member = findMember(state, action.memberId);
+  if (!member) return state;
+  const changed = (
+    Object.keys(action.changes) as (keyof MemberChanges)[]
+  ).filter(
+    (key) =>
+      JSON.stringify(member[key]) !== JSON.stringify(action.changes[key]),
+  );
+  if (changed.length === 0) return state;
+  const updated = { ...member, ...action.changes };
+  const fields = changed
+    .map((key) => MEMBER_FIELD_LABELS[key] ?? key)
+    .join(", ");
+
+  return {
+    ...state,
+    members: updateMember(state, member.id, action.changes),
+    activity: withActivity(state, action, {
+      kind: "edicion",
+      summary: `Datos de ${fullName(updated)} actualizados: ${fields}`,
+      memberId: member.id,
+    }),
+  };
+}
+
 function updateMember(
   state: SystemState,
   memberId: string,
@@ -390,6 +587,16 @@ export function systemReducer(
         }),
       };
     }
+    case "createBooking":
+      return createBooking(state, action);
+    case "updateBooking":
+      return updateBooking(state, action);
+    case "registerIncome":
+      return registerIncome(state, action);
+    case "closeCash":
+      return closeCash(state, action);
+    case "updateMember":
+      return editMember(state, action);
     case "replaceState":
       return action.state;
     case "sendDebtNotices":

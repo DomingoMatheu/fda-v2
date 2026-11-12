@@ -6,7 +6,12 @@ import { nextReceiptSequence } from "../_lib/billing";
 import { DEMO_TODAY, nowIso } from "../_lib/clock";
 import { canEmailNotice } from "../_lib/debt-notice";
 import { clearDemoState } from "../_lib/demo-storage";
-import { nextMemberNumber, systemReducer } from "../_lib/system-reducer";
+import {
+  nextBookingId,
+  nextIncomeId,
+  nextMemberNumber,
+  systemReducer,
+} from "../_lib/system-reducer";
 import type { SystemUser } from "../_types";
 import type { SystemContextValue } from "./system-context";
 import { useDemoPersistence } from "./use-demo-persistence";
@@ -61,6 +66,19 @@ export function useSystemStore(user: SystemUser): SystemContextValue {
       dispatch({ type: "sendDebtNotices", memberIds, ...stamp() });
       return sent;
     },
+    createBooking: (input) => {
+      dispatch({ type: "createBooking", input, ...stamp() });
+      return nextBookingId(state);
+    },
+    updateBooking: (bookingId, changes) =>
+      dispatch({ type: "updateBooking", bookingId, changes, ...stamp() }),
+    registerIncome: (input) => {
+      dispatch({ type: "registerIncome", input, ...stamp() });
+      return nextIncomeId(state);
+    },
+    closeCash: (input) => dispatch({ type: "closeCash", input, ...stamp() }),
+    updateMember: (memberId, changes) =>
+      dispatch({ type: "updateMember", memberId, changes, ...stamp() }),
     resetDemo: () => {
       clearDemoState();
       dispatch({ type: "replaceState", state: buildSeed() });

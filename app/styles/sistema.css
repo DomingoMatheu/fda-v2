@@ -15,4 +15,7 @@
 @import "./sistema/reports.css";
 @import "./sistema/settings.css";
 @import "./sistema/notices.css";
+@import "./sistema/bookings.css";
+@import "./sistema/cash.css";
+@import "./sistema/member-edit.css";
 @import "./sistema/motion.css";

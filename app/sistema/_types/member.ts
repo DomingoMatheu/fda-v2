@@ -85,3 +85,22 @@ export interface NewMemberInput {
   disciplineIds: string[];
   notes?: string;
 }
+
+// Fields Secretaría can correct on a member's page. Category changes into or
+// out of a family group are not allowed here: they change who is billed.
+export type MemberChanges = Partial<
+  Pick<
+    Member,
+    | "firstName"
+    | "lastName"
+    | "documentNumber"
+    | "birthDate"
+    | "gender"
+    | "email"
+    | "phone"
+    | "address"
+    | "category"
+    | "preferredPaymentMethod"
+    | "notes"
+  >
+>;

@@ -10,6 +10,8 @@ export type ModuleIcon =
   | "staff"
   | "disciplines"
   | "reports"
+  | "register"
+  | "calendar"
   | "settings";
 
 export interface SystemModule {
@@ -81,6 +83,18 @@ export const SYSTEM_MODULES: SystemModule[] = [
     highlights: ["Búsqueda por número o socio", "Recibo imprimible"],
   },
   {
+    href: "/sistema/caja",
+    label: "Caja del día",
+    icon: "register",
+    permission: "billing:read",
+    description: "Lo que entró hoy, por medio de pago, y el cierre de caja.",
+    highlights: [
+      "Ingresos del día por medio de pago",
+      "Otros ingresos: visitantes, alquileres, canon del buffet",
+      "Cierre de caja con arqueo e historial",
+    ],
+  },
+  {
     href: "/sistema/temporada",
     label: "Temporada",
     icon: "pool",
@@ -90,6 +104,18 @@ export const SYSTEM_MODULES: SystemModule[] = [
       "Control de ingreso por DNI o número de socio",
       "Carnets de pileta y aptos médicos",
       "Ingresos de hoy",
+    ],
+  },
+  {
+    href: "/sistema/reservas",
+    label: "Reservas",
+    icon: "calendar",
+    permission: "bookings:read",
+    description: "Quinchos y salón, sin planillas en papel.",
+    highlights: [
+      "Calendario de disponibilidad de quinchos y salón",
+      "Reserva a nombre de un socio con la lista de invitados",
+      "Exclusividad y alquiler del salón con su cobro",
     ],
   },
   {

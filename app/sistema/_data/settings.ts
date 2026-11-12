@@ -12,8 +12,17 @@ export interface ScheduledFee {
   monthly: number;
 }
 
+// Prices of the club's spaces. The hall has a price per slot; an exclusive
+// quincho charges each non-member guest a share of the visitor entrance.
+export interface BookingRates {
+  salonDay: number;
+  salonNight: number;
+  exclusiveGuestShare: number;
+}
+
 export interface SystemSettings {
   fees: ScheduledFee[];
+  bookingRates: BookingRates;
   lateFeeRate: number;
   dueDay: number;
   pointOfSale: number;
@@ -48,6 +57,11 @@ export const DEFAULT_SETTINGS: SystemSettings = {
     { key: "menor", label: "Menor", signUp: 33000, monthly: 16500 },
     { key: "jubilado", label: "Jubilado", signUp: 33000, monthly: 16500 },
   ],
+  bookingRates: {
+    salonDay: 250000,
+    salonNight: 380000,
+    exclusiveGuestShare: 0.5,
+  },
   lateFeeRate: 0.1,
   dueDay: DUE_DAY,
   pointOfSale: 1,
