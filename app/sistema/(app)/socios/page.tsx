@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../../_components/module-placeholder";
+import { MembersView } from "../../_components/members-view";
 
 export const metadata: Metadata = { title: "Socios" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema/socios" />;
+  return <MembersView />;
 }

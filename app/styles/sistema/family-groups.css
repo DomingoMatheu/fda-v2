@@ -1,1 +1,77 @@
-/* Grupos familiares */
+/* ───────── Family groups ───────── */
+.sys-families {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.sys-family {
+  display: grid;
+  gap: 14px;
+}
+.sys-family__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sys-family__head .sys-card__title {
+  margin-bottom: 2px;
+}
+.sys-family__holder {
+  color: var(--sys-muted);
+  font-size: 14px;
+}
+.sys-family__facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--sys-radius-sm);
+  background: var(--paper);
+}
+.sys-family__facts dt {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sys-muted);
+}
+.sys-family__facts dd {
+  margin: 4px 0 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sys-family__members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sys-family__members li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 12px;
+  padding: 7px 0;
+  border-top: 1px solid var(--sys-border);
+}
+.sys-family__members span {
+  color: var(--sys-muted);
+  font-size: 13.5px;
+}
+.sys-family__warnings {
+  list-style: none;
+  margin: 0;
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+  border-radius: var(--sys-radius-sm);
+  background: var(--sys-warn-bg);
+  color: var(--sys-warn);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.sys-family__warnings li::before {
+  content: "⚠ ";
+}

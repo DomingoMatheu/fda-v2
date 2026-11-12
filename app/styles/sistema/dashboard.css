@@ -1,1 +1,230 @@
-/* Inicio */
+/* ───────── Dashboard ("Inicio") ───────── */
+.sys-dashboard__title {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+/* "Para hoy" */
+.sys-today {
+  margin-bottom: 24px;
+}
+.sys-today__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.sys-today__card {
+  display: flex;
+  flex-direction: column;
+}
+.sys-today__card .sys-card__title {
+  margin-bottom: 2px;
+}
+.sys-today__hint {
+  color: var(--sys-muted);
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+.sys-today__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sys-today__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--sys-border);
+}
+.sys-today__text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.sys-today__text span {
+  color: var(--sys-muted);
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+.sys-today__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sys-today__muted {
+  color: var(--sys-muted);
+  font-size: 13px;
+}
+.sys-today__more {
+  margin-top: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--green);
+}
+.sys-today__more:hover {
+  text-decoration: underline;
+}
+
+/* Collection chart */
+.sys-dashboard__chart {
+  margin-bottom: 24px;
+}
+.sys-dashboard__chart-head .sys-card__title {
+  margin-bottom: 2px;
+}
+.sys-chart {
+  --sys-chart-bar: #2f7d45;
+  --sys-chart-current: var(--yellow-deep);
+  position: relative;
+}
+.sys-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.sys-chart__grid {
+  stroke: rgba(15, 42, 31, 0.1);
+  stroke-width: 1;
+}
+.sys-chart__baseline {
+  stroke: rgba(15, 42, 31, 0.35);
+  stroke-width: 1;
+}
+.sys-chart__tick,
+.sys-chart__month {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  fill: var(--sys-muted);
+}
+.sys-chart__value {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+.sys-chart__column path {
+  fill: var(--sys-chart-bar);
+  transition: opacity 0.15s;
+}
+.sys-chart__column.is-current path {
+  fill: var(--sys-chart-current);
+}
+.sys-chart__svg:has(.is-active) .sys-chart__column:not(.is-active) path {
+  opacity: 0.55;
+}
+.sys-chart__hit {
+  fill: transparent;
+  cursor: default;
+  outline: none;
+}
+.sys-chart__hit:focus-visible {
+  stroke: var(--green);
+  stroke-width: 2;
+}
+.sys-chart__tooltip {
+  position: absolute;
+  left: clamp(70px, var(--x), calc(100% - 70px));
+  top: var(--y);
+  transform: translate(-50%, calc(-100% - 10px));
+  display: grid;
+  gap: 1px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--green-deep);
+  color: var(--cream);
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 12px 30px -14px rgba(15, 42, 31, 0.6);
+}
+.sys-chart__tooltip strong {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Latest payments and activity */
+.sys-dashboard__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.sys-activity {
+  list-style: none;
+  margin: 0;
+  padding: 4px 20px;
+}
+.sys-activity__item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 11px 0;
+  border-top: 1px solid var(--sys-border);
+}
+.sys-activity__item:first-child {
+  border-top: none;
+}
+.sys-activity__kind {
+  flex-shrink: 0;
+  width: 92px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  background: var(--sys-neutral-bg);
+  color: var(--sys-neutral);
+}
+.sys-activity__kind--pago {
+  background: var(--sys-ok-bg);
+  color: var(--sys-ok);
+}
+.sys-activity__kind--alta,
+.sys-activity__kind--carnet {
+  background: var(--sys-info-bg);
+  color: var(--sys-info);
+}
+.sys-activity__kind--baja {
+  background: var(--sys-danger-bg);
+  color: var(--sys-danger);
+}
+.sys-activity__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.sys-activity__meta {
+  color: var(--sys-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 560px) {
+  /* The chart scales down with the screen: its text is set larger in SVG
+     units so it still reads at about 9px. */
+  .sys-chart__tick,
+  .sys-chart__month {
+    font-size: 19px;
+  }
+  .sys-chart__value {
+    font-size: 17px;
+  }
+  .sys-activity {
+    padding: 4px 14px;
+  }
+  .sys-activity__kind {
+    width: 78px;
+  }
+}
+
+.sys-dashboard__columns .sys-table .is-end {
+  white-space: nowrap;
+}

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../_components/module-placeholder";
+import { DashboardView } from "../_components/dashboard-view";
 
 export const metadata: Metadata = { title: "Inicio" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema" />;
+  return <DashboardView />;
 }
