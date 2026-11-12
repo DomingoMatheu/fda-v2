@@ -196,11 +196,19 @@ test.describe("sistema", () => {
     await expect(page.getByText(reason).first()).toBeVisible();
   });
 
-  test("an unknown member returns a 404", async ({ page }) => {
+  // Members live in the browser (new ones included), so the page finds out
+  // a member is missing on the client and shows the not-found screen there.
+  test("an unknown member shows the not-found screen", async ({ page }) => {
     await login(page);
-    const response = await page.goto("/sistema/socios/no-existe");
+    await page.goto("/sistema/socios/no-existe");
 
-    expect(response?.status()).toBe(404);
+    await expect(
+      page.getByRole("heading", { name: "No encontramos ese socio" }),
+    ).toBeVisible();
+    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute(
+      "content",
+      /noindex/,
+    );
   });
 
   test("the system stays out of search engines", async ({ page, request }) => {

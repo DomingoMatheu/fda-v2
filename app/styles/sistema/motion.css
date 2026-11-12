@@ -1,0 +1,263 @@
+/* Motion of the system: screen entrances, the loading skeleton and small
+   reveals. Entrance animations use `backwards` fill so no transform is left
+   behind once they finish (a leftover transform would trap the fixed-position
+   modals inside the screen). Everything is off when the visitor asks for
+   reduced motion. */
+.sys {
+  --sys-ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --sys-step: 45ms;
+}
+
+@keyframes sys-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes sys-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sys-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+@keyframes sys-verdict {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+}
+@keyframes sys-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes sys-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes sys-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* ───────── Screen entrance ───────── */
+/* The blocks of a screen (header, cards, tables) rise one after the other.
+   Some screens wrap everything in a single element, so its children count
+   as the blocks too. */
+.sys-page > *,
+.sys-page > div:only-child > * {
+  animation: sys-rise 380ms var(--sys-ease-out) backwards;
+}
+.sys-page > :nth-child(2),
+.sys-page > div:only-child > :nth-child(2) {
+  animation-delay: calc(var(--sys-step) * 1);
+}
+.sys-page > :nth-child(3),
+.sys-page > div:only-child > :nth-child(3) {
+  animation-delay: calc(var(--sys-step) * 2);
+}
+.sys-page > :nth-child(4),
+.sys-page > div:only-child > :nth-child(4) {
+  animation-delay: calc(var(--sys-step) * 3);
+}
+.sys-page > :nth-child(n + 5),
+.sys-page > div:only-child > :nth-child(n + 5) {
+  animation-delay: calc(var(--sys-step) * 4);
+}
+
+/* Stat cards land in a cascade. */
+.sys-stats > * {
+  animation: sys-pop 420ms var(--sys-ease-out) backwards;
+  animation-delay: 60ms;
+}
+.sys-stats > :nth-child(2) {
+  animation-delay: 110ms;
+}
+.sys-stats > :nth-child(3) {
+  animation-delay: 160ms;
+}
+.sys-stats > :nth-child(n + 4) {
+  animation-delay: 210ms;
+}
+
+/* Table rows fade in top to bottom; rows that appear later (a new filter, a
+   new tab) do the same. */
+.sys-table tbody tr {
+  animation: sys-fade 280ms ease-out backwards;
+  animation-delay: 120ms;
+}
+.sys-table tbody tr:nth-child(2) {
+  animation-delay: 140ms;
+}
+.sys-table tbody tr:nth-child(3) {
+  animation-delay: 160ms;
+}
+.sys-table tbody tr:nth-child(4) {
+  animation-delay: 180ms;
+}
+.sys-table tbody tr:nth-child(5) {
+  animation-delay: 200ms;
+}
+.sys-table tbody tr:nth-child(6) {
+  animation-delay: 220ms;
+}
+.sys-table tbody tr:nth-child(7) {
+  animation-delay: 240ms;
+}
+.sys-table tbody tr:nth-child(n + 8) {
+  animation-delay: 260ms;
+}
+
+/* ───────── Charts: bars grow from their base ───────── */
+.sys-chart__column > path,
+.sys-chart__slot > path {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: sys-grow-y 650ms var(--sys-ease-out) 150ms backwards;
+}
+.sys-chart__slot > g > rect,
+.sys-chart__svg > g:not([class]) > path {
+  transform-box: fill-box;
+  transform-origin: left;
+  animation: sys-grow-x 650ms var(--sys-ease-out) 150ms backwards;
+}
+.sys-chart__value {
+  animation: sys-fade 300ms ease-out 600ms backwards;
+}
+
+/* ───────── Overlays ───────── */
+.sys-modal__backdrop {
+  animation: sys-fade 200ms ease-out backwards;
+}
+.sys-modal__dialog {
+  animation: sys-pop 260ms var(--sys-ease-out) backwards;
+}
+.sys-search__results {
+  animation: sys-pop 180ms var(--sys-ease-out) backwards;
+}
+.sys-app.is-menu-open .sys-backdrop {
+  animation: sys-fade 220ms ease-out backwards;
+}
+
+/* The gate's verdict pops so the doorman notices it at a glance. */
+.sys-gate__result {
+  animation: sys-verdict 420ms var(--sys-ease-out) backwards;
+}
+
+/* ───────── Small feedback ───────── */
+.sys-button,
+.sys-chip {
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    transform 0.1s;
+}
+.sys-button:active:not(:disabled),
+.sys-chip:active {
+  transform: scale(0.97);
+}
+.sys-tabs__tab {
+  transition:
+    color 0.2s,
+    border-color 0.25s;
+}
+.sys-nav__link {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+/* ───────── Loading skeleton ───────── */
+/* Fades in after a short wait, so fast loads never flash it. */
+.sys-skeleton {
+  display: grid;
+  gap: 24px;
+  animation: sys-fade 250ms ease-out 180ms backwards;
+}
+.sys-skeleton__header {
+  display: grid;
+  gap: 10px;
+}
+.sys-skeleton__line,
+.sys-skeleton__block {
+  display: block;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 42, 31, 0.07) 25%,
+    rgba(15, 42, 31, 0.13) 50%,
+    rgba(15, 42, 31, 0.07) 75%
+  );
+  background-size: 200% 100%;
+  animation: sys-shimmer 1.4s linear infinite;
+}
+.sys-skeleton__line--eyebrow {
+  width: 90px;
+  height: 11px;
+}
+.sys-skeleton__line--title {
+  width: min(320px, 70%);
+  height: 34px;
+}
+.sys-skeleton__line--text {
+  width: min(460px, 90%);
+  height: 14px;
+}
+.sys-skeleton__stat {
+  height: 104px;
+  border-radius: var(--sys-radius);
+}
+.sys-skeleton__table {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius);
+  background: var(--sys-surface);
+}
+.sys-skeleton__row {
+  height: 18px;
+}
+.sys-skeleton__row:nth-child(odd) {
+  width: 92%;
+}
+
+/* ───────── Login ───────── */
+.sys-login__brand > * {
+  animation: sys-rise 500ms var(--sys-ease-out) backwards;
+}
+.sys-login__brand > :nth-child(2) {
+  animation-delay: 80ms;
+}
+.sys-login__brand > :nth-child(3) {
+  animation-delay: 160ms;
+}
+.sys-login__card {
+  animation: sys-pop 480ms var(--sys-ease-out) 120ms backwards;
+}
+
+/* ───────── Reduced motion ───────── */
+@media (prefers-reduced-motion: reduce) {
+  .sys *,
+  .sys *::before,
+  .sys *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

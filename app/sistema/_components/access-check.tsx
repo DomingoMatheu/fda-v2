@@ -244,10 +244,16 @@ export function AccessCheck({ onAction }: AccessCheckProps) {
 
       <div ref={resultRef} aria-live="polite">
         {lookup.kind === "member" && (
-          <MemberResult gate={gate} lookup={lookup} onAction={onAction} />
+          <MemberResult
+            // A new key replays the reveal for every person and verdict.
+            key={`${lookup.member.id}-${lookup.check.allowed}`}
+            gate={gate}
+            lookup={lookup}
+            onAction={onAction}
+          />
         )}
         {lookup.kind === "unknown" && (
-          <UnknownResult gate={gate} lookup={lookup} />
+          <UnknownResult key={lookup.digits} gate={gate} lookup={lookup} />
         )}
         {lookup.kind === "idle" && (
           <p className="sys-gate__idle">

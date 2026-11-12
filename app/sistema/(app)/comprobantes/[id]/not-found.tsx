@@ -7,8 +7,8 @@ export default function ReceiptNotFound() {
       <PageHeader eyebrow="Comprobantes" title="No encontramos ese recibo" />
       <section className="sys-card sys-receipts__missing">
         <p>
-          Puede que el número esté mal o que el recibo se haya emitido en otra
-          sesión de la demo, que no guarda los datos al recargar.
+          Puede que el número esté mal o que el recibo se haya emitido en otro
+          navegador: cada uno guarda su propia copia de la demo.
         </p>
         <Link
           href="/sistema/comprobantes"
