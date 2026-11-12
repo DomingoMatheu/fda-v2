@@ -66,7 +66,7 @@ export const DISCIPLINES: Discipline[] = [
     name: "Sóftbol",
     image: "/club/softbol.jpg",
     alt: "Bateador de sóftbol conectando un lanzamiento durante un entrenamiento",
-    phone: "341 353 1615",
+    phone: "341 353 1655",
   },
   {
     name: "Ultimate Frisbee",
