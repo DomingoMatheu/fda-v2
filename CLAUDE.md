@@ -86,3 +86,44 @@ Run `npx next typegen` to generate `PageProps`, `LayoutProps`, and `RouteContext
 @docs/rules/error-handling.md
 @docs/rules/performance.md
 @docs/rules/git.md
+
+## Management system ("Sistema de gestión")
+
+Besides the landing, this repo hosts the **club's internal management system**
+under `/sistema`: a web replacement for the old system the club uses today
+(apparently Hoost, `far.myhoost.com`: old, reachable only from some computers,
+unclear features). Read `docs/sistema/propuesta.md` before touching anything
+under `app/sistema/`: it holds the full idea, the modules, the feature list,
+the data model, the migration plan, the phases for the quote and the technical
+decisions, which are already taken. `PROMPTS.md` at the repo root has the
+prompts, one per stage, used to build it in separate Claude Code sessions (the
+API's own prompts are in `../api/PROMPTS.md`).
+
+**Current stage: the demo.** It lives on branch `feat/sistema-demo`, with mock
+data generated in memory and a fake cookie login, so the club can try the flows
+before approving a quote. If they approve, the branch is merged to production;
+if not, it is deleted and the landing stays as is.
+
+- Everything is self-contained in `app/sistema/` (route groups `(auth)` for
+  the login and `(app)` for the gated system; `_types/`, `_data/`, `_lib/`,
+  `_components/`, `_actions/`) plus `app/styles/sistema/` (classes prefixed
+  `sys-`, imported only from `app/sistema/layout.tsx`, never from
+  `globals.css`). Reuse the landing's tokens, fonts, `club-info.ts`,
+  `disciplines.ts`, `fees.ts`, `whatsapp.ts` and hooks instead of copying them.
+- `app/sistema/_types/` is the domain contract (members, family groups, fees,
+  payments, receipts, pool season, access control, employees, disciplines,
+  users, roles). The API's DTOs and Prisma schema follow it; change it with
+  care and keep both sides in sync.
+- `/sistema` is `noindex`, out of the sitemap and disallowed in `robots.ts`.
+- Demo conventions: fixed "today" in `_lib/clock.ts`, Context + `useReducer`
+  store (`SystemProvider`, `useSystem()`), no persistence, derived states
+  (overdue fees, pool access) computed in pure helpers, never stored.
+- Same rules as the landing: code in English, copy in Rioplatense Spanish,
+  plain CSS, hooks in `use-*.ts`, data in data files, no `console.log`.
+
+**The real system.** The front stays here under `/sistema`; only the API is a
+separate repo: `LumarSoft/fda-api` (NestJS + Prisma + MySQL, started from the
+`LumarSoft/prisma_api` starter). The two repos sit side by side inside the
+`fda-v2/` workspace folder: `front/` (this repo) and `api/`. Each is its own git
+repository; run each one's commands from inside its folder. Migration from the
+old system is defined once we know how it hands over its data.
