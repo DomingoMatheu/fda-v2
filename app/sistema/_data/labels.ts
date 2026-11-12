@@ -127,6 +127,7 @@ export const INCOME_SOURCE_LABELS: Record<IncomeSource, string> = {
 export const MEMBER_FIELD_LABELS: Partial<Record<keyof Member, string>> = {
   firstName: "nombre",
   lastName: "apellido",
+  documentType: "tipo de documento",
   documentNumber: "DNI",
   birthDate: "fecha de nacimiento",
   gender: "género",

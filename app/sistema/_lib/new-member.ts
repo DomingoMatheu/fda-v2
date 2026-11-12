@@ -61,10 +61,12 @@ function documentDigits(documentNumber: string): string {
   return documentNumber.replace(/[.\s]/g, "");
 }
 
+// `editingId` leaves the member being edited out of the duplicate check.
 export function validateNewMember(
   values: NewMemberValues,
   members: Member[],
   on: string,
+  editingId?: string,
 ): NewMemberErrors {
   const errors: NewMemberErrors = {};
   if (!values.firstName.trim()) errors.firstName = "Completá el nombre.";
@@ -72,7 +74,7 @@ export function validateNewMember(
 
   const document = documentDigits(values.documentNumber);
   const duplicate = members.find(
-    ({ documentNumber }) => documentNumber === document,
+    ({ id, documentNumber }) => documentNumber === document && id !== editingId,
   );
   if (!/^\d{6,9}$/.test(document))
     errors.documentNumber = "Ingresá el número sin letras (de 6 a 9 dígitos).";
@@ -94,7 +96,10 @@ export function validateNewMember(
   return errors;
 }
 
-export function toNewMemberInput(values: NewMemberValues): NewMemberInput {
+export type MemberData = Omit<NewMemberInput, "disciplineIds">;
+
+// The member's own data from the form, trimmed; empty optionals are dropped.
+export function toMemberData(values: NewMemberValues): MemberData {
   const optional = (text: string): string | undefined =>
     text.trim() || undefined;
   return {
@@ -115,9 +120,12 @@ export function toNewMemberInput(values: NewMemberValues): NewMemberInput {
     },
     category: values.category,
     preferredPaymentMethod: values.preferredPaymentMethod,
-    disciplineIds: values.disciplineIds,
     notes: optional(values.notes),
   };
+}
+
+export function toNewMemberInput(values: NewMemberValues): NewMemberInput {
+  return { ...toMemberData(values), disciplineIds: values.disciplineIds };
 }
 
 export interface FeePreviewItem {

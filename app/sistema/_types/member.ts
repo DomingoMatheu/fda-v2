@@ -93,6 +93,7 @@ export type MemberChanges = Partial<
     Member,
     | "firstName"
     | "lastName"
+    | "documentType"
     | "documentNumber"
     | "birthDate"
     | "gender"

@@ -13,6 +13,7 @@ import {
 } from "../_lib/format";
 import { periodLabel } from "../_lib/period";
 import { MemberAccountPanel } from "./member-account-panel";
+import { MemberEditModal } from "./member-edit-modal";
 import { MemberInfo } from "./member-info";
 import { Modal } from "./modal";
 import { PermissionGate } from "./permission-gate";
@@ -72,6 +73,15 @@ export function MemberDetail({ memberId }: MemberDetailProps) {
           )}
           <ReminderLink member={member} />
           <DebtNoticeButton memberIds={[member.id]} label="Avisar por correo" />
+          {detail.canEdit && (
+            <button
+              type="button"
+              className="sys-button"
+              onClick={detail.openEdit}
+            >
+              Editar datos
+            </button>
+          )}
           {detail.canEdit && member.status === "activo" && (
             <button
               type="button"
@@ -157,6 +167,10 @@ export function MemberDetail({ memberId }: MemberDetailProps) {
           onClose={detail.closePayment}
           onRegistered={detail.onRegistered}
         />
+      )}
+
+      {detail.isEditOpen && (
+        <MemberEditModal member={member} onClose={detail.closeEdit} />
       )}
 
       {detail.statusDialog && (

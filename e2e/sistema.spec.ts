@@ -151,6 +151,27 @@ test.describe("sistema", () => {
     await expect(badges).toContainText("Moroso");
   });
 
+  test("edits a member's data and rejects another member's DNI", async ({
+    page,
+  }) => {
+    await login(page);
+    await page.goto(`/sistema/socios/${ALLOWED.id}`);
+    await page.getByRole("button", { name: "Editar datos" }).click();
+    const dialog = page.getByRole("dialog", { name: "Editar datos del socio" });
+
+    await dialog.getByLabel("Número de documento").fill(DEBTOR.documentNumber);
+    await dialog.getByRole("button", { name: "Guardar cambios" }).click();
+    await expect(dialog).toContainText(
+      `Ese documento ya es del socio n.º ${DEBTOR.memberNumber}`,
+    );
+
+    await dialog.getByLabel("Número de documento").fill(ALLOWED.documentNumber);
+    await dialog.getByLabel("Teléfono").fill("341 600 2244");
+    await dialog.getByRole("button", { name: "Guardar cambios" }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(page.getByText("341 600 2244")).toBeVisible();
+  });
+
   test("emails a debt notice to every debtor at once", async ({ page }) => {
     await login(page, "tesoreria");
     await page.goto("/sistema/cobranza");

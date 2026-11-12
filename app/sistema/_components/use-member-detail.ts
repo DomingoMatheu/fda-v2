@@ -69,6 +69,9 @@ interface MemberDetail {
   closePayment: () => void;
   lastReceiptId?: string;
   onRegistered: (receiptId: string) => void;
+  isEditOpen: boolean;
+  openEdit: () => void;
+  closeEdit: () => void;
   statusDialog?: StatusDialog;
   openStatusDialog: (dialog: StatusDialog) => void;
   closeStatusDialog: () => void;
@@ -102,13 +105,14 @@ function detailData(member: Member, state: SystemState): MemberDetailData {
 }
 
 // The member page ("ficha"): everything about one member plus the actions
-// on it (charge, remind, suspend or reactivate).
+// on it (charge, remind, edit, suspend or reactivate).
 export function useMemberDetail(memberId: string): MemberDetail {
   const { state, user, setMemberStatus, notify } = useSystem();
   const [tab, setTab] = useState<AccountTab>("cuotas");
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [lastReceiptId, setLastReceiptId] = useState<string>();
   const [statusDialog, setStatusDialog] = useState<StatusDialog>();
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const member = findMember(state.members, memberId);
 
   return {
@@ -125,6 +129,9 @@ export function useMemberDetail(memberId: string): MemberDetail {
       setLastReceiptId(receiptId);
       setTab("pagos");
     },
+    isEditOpen,
+    openEdit: () => setIsEditOpen(true),
+    closeEdit: () => setIsEditOpen(false),
     statusDialog,
     openStatusDialog: setStatusDialog,
     closeStatusDialog: () => setStatusDialog(undefined),

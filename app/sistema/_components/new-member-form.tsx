@@ -1,68 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { DISCIPLINE_PROGRAMS } from "../_data/disciplines";
 import { CATEGORY_LABELS, PAYMENT_METHOD_LABELS } from "../_data/labels";
-import { DOCUMENT_TYPE_LABELS, GENDER_LABELS } from "../_data/member-labels";
-import { DEMO_TODAY } from "../_lib/clock";
 import { formatMoney } from "../_lib/format";
-import type { NewMemberValues } from "../_lib/new-member";
-import type {
-  DocumentType,
-  Gender,
-  MemberCategory,
-  PaymentMethod,
-} from "../_types";
+import type { MemberCategory, PaymentMethod } from "../_types";
+import { Field, labelEntries } from "./form-field";
+import {
+  MemberContactFields,
+  MemberNotesField,
+  MemberPersonalFields,
+} from "./member-fields";
 import { PageHeader } from "./page-header";
 import { PermissionGate } from "./permission-gate";
 import { useNewMemberForm } from "./use-new-member-form";
 
-interface FieldProps {
-  label: string;
-  error?: string;
-  hint?: string;
-  wide?: boolean;
-  children: ReactNode;
-}
-
-function Field({ label, error, hint, wide = false, children }: FieldProps) {
-  return (
-    <label className={`sys-field${wide ? " sys-new-member__wide" : ""}`}>
-      <span className="sys-field__label">{label}</span>
-      {children}
-      {error ? (
-        <span className="sys-field__error">{error}</span>
-      ) : (
-        hint && <span className="sys-field__hint">{hint}</span>
-      )}
-    </label>
-  );
-}
-
-function entries<Key extends string>(
-  labels: Record<Key, string>,
-): [Key, string][] {
-  return Object.entries(labels) as [Key, string][];
-}
-
-type TextKey = {
-  [Key in keyof NewMemberValues]: NewMemberValues[Key] extends string
-    ? Key
-    : never;
-}[keyof NewMemberValues];
-
 export function NewMemberForm() {
   const form = useNewMemberForm();
   const { values, errors, setValue } = form;
-  const text = (key: TextKey) => ({
-    value: values[key],
-    onChange: (event: { target: { value: string } }) =>
-      setValue(key, event.target.value),
-    "aria-invalid": errors[key] ? true : undefined,
-    className: "sys-input",
-  });
-
   return (
     <PermissionGate permission="members:write">
       <Link href="/sistema/socios" className="sys-member__back">
@@ -78,70 +33,12 @@ export function NewMemberForm() {
         <div className="sys-new-member__main">
           <fieldset className="sys-card sys-new-member__section">
             <legend className="sys-card__title">Datos personales</legend>
-            <Field label="Nombre" error={errors.firstName}>
-              <input {...text("firstName")} autoComplete="off" />
-            </Field>
-            <Field label="Apellido" error={errors.lastName}>
-              <input {...text("lastName")} autoComplete="off" />
-            </Field>
-            <Field label="Tipo de documento">
-              <select
-                className="sys-input"
-                value={values.documentType}
-                onChange={(event) =>
-                  setValue("documentType", event.target.value as DocumentType)
-                }
-              >
-                {entries(DOCUMENT_TYPE_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Número de documento" error={errors.documentNumber}>
-              <input {...text("documentNumber")} inputMode="numeric" />
-            </Field>
-            <Field label="Fecha de nacimiento" error={errors.birthDate}>
-              <input {...text("birthDate")} type="date" max={DEMO_TODAY} />
-            </Field>
-            <Field label="Género">
-              <select
-                className="sys-input"
-                value={values.gender}
-                onChange={(event) =>
-                  setValue("gender", event.target.value as Gender)
-                }
-              >
-                {entries(GENDER_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </Field>
+            <MemberPersonalFields {...form} />
           </fieldset>
 
           <fieldset className="sys-card sys-new-member__section">
             <legend className="sys-card__title">Contacto y domicilio</legend>
-            <Field label="Teléfono" hint="Para los recordatorios por WhatsApp.">
-              <input {...text("phone")} type="tel" placeholder="341 555 1234" />
-            </Field>
-            <Field label="Email" error={errors.email}>
-              <input {...text("email")} type="email" />
-            </Field>
-            <Field label="Calle" error={errors.street}>
-              <input {...text("street")} />
-            </Field>
-            <Field label="Número">
-              <input {...text("streetNumber")} inputMode="numeric" />
-            </Field>
-            <Field label="Piso y depto.">
-              <input {...text("floor")} />
-            </Field>
-            <Field label="Ciudad">
-              <input {...text("city")} />
-            </Field>
+            <MemberContactFields {...form} />
           </fieldset>
 
           <fieldset className="sys-card sys-new-member__section">
@@ -162,7 +59,7 @@ export function NewMemberForm() {
                   setValue("category", event.target.value as MemberCategory)
                 }
               >
-                {entries(CATEGORY_LABELS).map(([value, label]) => (
+                {labelEntries(CATEGORY_LABELS).map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}
                   </option>
@@ -180,7 +77,7 @@ export function NewMemberForm() {
                   )
                 }
               >
-                {entries(PAYMENT_METHOD_LABELS).map(([value, label]) => (
+                {labelEntries(PAYMENT_METHOD_LABELS).map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}
                   </option>
@@ -209,9 +106,7 @@ export function NewMemberForm() {
                 ))}
               </div>
             </div>
-            <Field label="Notas" wide>
-              <textarea {...text("notes")} rows={3} />
-            </Field>
+            <MemberNotesField {...form} className="sys-new-member__wide" />
           </fieldset>
         </div>
 
