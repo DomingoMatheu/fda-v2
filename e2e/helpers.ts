@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import type { Page, Request } from "@playwright/test";
 
 // WebKit logs these when its own native video controls cannot load their
 // icons in the test browser; they do not come from the site.
@@ -7,6 +7,16 @@ const BROWSER_NOISE = /^Button failed to load, iconName = /;
 // Vercel serves the Analytics script only on its own hosting, so it 404s
 // when the production build runs locally.
 const VERCEL_ONLY = /\/_vercel\//;
+
+// Next.js cancels link prefetches (RSC requests) it no longer needs, for
+// example when the links re-render; a cancelled prefetch is not a failure.
+function isCancelledPrefetch(request: Request): boolean {
+  const reason = request.failure()?.errorText ?? "";
+  return (
+    new URL(request.url()).searchParams.has("_rsc") &&
+    /aborted|cancelled/i.test(reason)
+  );
+}
 
 // Collects console errors, uncaught exceptions and failed same-origin
 // requests so a test can assert the page loaded cleanly.
@@ -29,7 +39,8 @@ export function trackPageProblems(page: Page): string[] {
   page.on("requestfailed", (request) => {
     if (
       origin(request.url()) === origin(page.url()) &&
-      !VERCEL_ONLY.test(request.url())
+      !VERCEL_ONLY.test(request.url()) &&
+      !isCancelledPrefetch(request)
     ) {
       problems.push(`request failed: ${request.url()}`);
     }
