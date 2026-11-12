@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "../../_components/module-placeholder";
+import { ReceiptsView } from "../../_components/receipts-view";
 
 export const metadata: Metadata = { title: "Comprobantes" };
 
 export default function Page() {
-  return <ModulePlaceholder href="/sistema/comprobantes" />;
+  return <ReceiptsView />;
 }
