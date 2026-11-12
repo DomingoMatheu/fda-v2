@@ -2,7 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { buildSeed } from "../app/sistema/_data/seed";
 import { DEMO_PASSWORD } from "../app/sistema/_data/users";
 import { memberBalance } from "../app/sistema/_lib/billing";
-import { DEMO_TODAY } from "../app/sistema/_lib/clock";
+import { amountsByMethod, dayMovements } from "../app/sistema/_lib/cash";
+import { addDays, DEMO_TODAY } from "../app/sistema/_lib/clock";
+import { formatMoney } from "../app/sistema/_lib/format";
 import { accountHolder } from "../app/sistema/_lib/members";
 import { checkPoolAccess } from "../app/sistema/_lib/pool-access";
 import type { Member } from "../app/sistema/_types";
@@ -38,6 +40,37 @@ const DENIED = findMember(
     member.status === "activo" &&
     !checkPoolAccess(member, SEED, DEMO_TODAY).allowed,
 );
+
+const TODAY_BOOKING = (() => {
+  const booking = SEED.bookings.find(
+    (candidate) =>
+      candidate.date === DEMO_TODAY &&
+      candidate.status !== "cancelada" &&
+      candidate.guests.length > 0,
+  );
+  if (!booking) throw new Error("The seed has no booking with guests today");
+  return booking;
+})();
+const [TODAY_GUEST] = TODAY_BOOKING.guests;
+
+// The first day from next week on with nothing booked in the small quincho.
+const FREE_QUINCHO_DATE = (() => {
+  for (let offset = 7; offset < 120; offset += 1) {
+    const date = addDays(DEMO_TODAY, offset);
+    const taken = SEED.bookings.some(
+      (booking) =>
+        booking.venueId === "quincho-chico" &&
+        booking.date === date &&
+        booking.status !== "cancelada",
+    );
+    if (!taken) return date;
+  }
+  throw new Error("The seed has no free day for the small quincho");
+})();
+
+const EXPECTED_CASH_TODAY = amountsByMethod(
+  dayMovements(SEED, DEMO_TODAY),
+).efectivo;
 
 async function login(page: Page, username = "secretaria"): Promise<void> {
   await page.goto("/sistema/login");
@@ -215,6 +248,71 @@ test.describe("sistema", () => {
     await expect(verdict).toHaveText("No habilitado");
     const [reason] = checkPoolAccess(DENIED, SEED, DEMO_TODAY).reasons;
     await expect(page.getByText(reason).first()).toBeVisible();
+  });
+
+  test("the gate finds a guest on today's booking lists", async ({ page }) => {
+    await login(page, "porteria");
+    await page.goto("/sistema/reservas");
+    await page.getByRole("tab", { name: "Hoy (portería)" }).click();
+    await page
+      .getByLabel(/Buscar invitado en las listas de hoy/)
+      .fill(TODAY_GUEST.documentNumber);
+
+    await expect(page.locator(".sys-bookings-today__hit")).toContainText(
+      `${TODAY_GUEST.firstName} ${TODAY_GUEST.lastName}`,
+    );
+    await expect(page.locator(".sys-bookings-today__hit")).toContainText(
+      `invitado por ${TODAY_BOOKING.contactName}`,
+    );
+  });
+
+  test("books a quincho for a member and blocks a taken slot", async ({
+    page,
+  }) => {
+    await login(page);
+    await page.goto("/sistema/reservas/nueva");
+    await page.getByLabel("Espacio").selectOption(TODAY_BOOKING.venueId);
+    await page.getByLabel("Fecha").fill(DEMO_TODAY);
+    await expect(
+      page.getByRole("radio", { name: new RegExp(TODAY_BOOKING.contactName) }),
+    ).toBeDisabled();
+
+    await page.getByLabel("Espacio").selectOption("quincho-chico");
+    await page.getByLabel("Fecha").fill(FREE_QUINCHO_DATE);
+    await page.getByLabel("Socio responsable").fill(ALLOWED.documentNumber);
+    await page
+      .getByRole("list", { name: "Socios encontrados" })
+      .getByRole("button")
+      .first()
+      .click();
+    await page.getByLabel(/Personas esperadas/).fill("20");
+    await page.getByRole("button", { name: "Guardar reserva" }).click();
+
+    await expect(page).toHaveURL(/\/sistema\/reservas\/reserva-\d+$/);
+    await expect(page.getByText(ALLOWED.lastName).first()).toBeVisible();
+  });
+
+  test("closes the day's cash register and shows the shortfall", async ({
+    page,
+  }) => {
+    await login(page, "tesoreria");
+    await page.goto("/sistema/caja");
+    await page.getByRole("button", { name: "Cerrar caja" }).click();
+    const dialog = page.getByRole("dialog", { name: /Cerrar la caja del/ });
+
+    await dialog
+      .getByLabel("Efectivo contado")
+      .fill(String(EXPECTED_CASH_TODAY - 1000));
+    await expect(dialog).toContainText(`Faltante de ${formatMoney(1000)}`);
+    await dialog.getByRole("button", { name: "Confirmar cierre" }).click();
+
+    await expect(dialog).toHaveCount(0);
+    await expect(
+      page
+        .getByText("Cerrada con diferencia")
+        .filter({ visible: true })
+        .first(),
+    ).toBeVisible();
   });
 
   // Members live in the browser (new ones included), so the page finds out
