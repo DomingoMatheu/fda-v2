@@ -1,7 +1,7 @@
 import type { ModuleIcon } from "../_data/modules";
 
 export type IconName =
-  ModuleIcon | "search" | "menu" | "close" | "logout" | "lock";
+  ModuleIcon | "search" | "menu" | "close" | "logout" | "lock" | "mail";
 
 // Simple stroke icons drawn for the system (24×24 grid).
 const PATHS: Record<IconName, string[]> = {
@@ -56,6 +56,7 @@ const PATHS: Record<IconName, string[]> = {
     "M10 17l-5-5 5-5",
     "M5 12h11",
   ],
+  mail: ["M3 6h18v12H3z", "m3 7 9 6 9-6"],
   lock: ["M6 11h12v10H6z", "M8.5 11V7.5a3.5 3.5 0 0 1 7 0V11"],
 };
 

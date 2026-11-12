@@ -228,3 +228,19 @@
 .sys-dashboard__columns .sys-table .is-end {
   white-space: nowrap;
 }
+
+.sys-today__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+}
+.sys-today__footer .sys-today__more {
+  margin-top: 0;
+}
+.sys-activity__kind--aviso {
+  color: var(--sys-info);
+  background: var(--sys-info-bg);
+}

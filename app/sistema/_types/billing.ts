@@ -77,3 +77,18 @@ export interface MemberBalance {
   surcharge: number;
   status: MemberFeeStatus;
 }
+
+export type NoticeChannel = "email" | "whatsapp";
+
+// A debt notice sent to an account holder. Kept so the club knows who was
+// already warned, when and for how much.
+export interface DebtNotice {
+  id: string;
+  memberId: string;
+  channel: NoticeChannel;
+  sentAt: string;
+  sentByUserId: string;
+  // Address it went to, for email notices.
+  email?: string;
+  overdueTotal: number;
+}

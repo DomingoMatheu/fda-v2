@@ -36,6 +36,9 @@ export interface SystemContextValue {
   recordAccess: (log: Omit<AccessLog, "id" | "at">) => void;
   setMemberStatus: (memberId: string, status: MemberStatus) => void;
   updateSettings: (settings: SystemSettings) => void;
+  // Emails a debt notice to the debtors picked that have an address and
+  // returns how many were sent.
+  sendDebtNotices: (memberIds: string[]) => number;
   notify: (message: string, tone?: ToastTone) => void;
   dismissToast: (id: number) => void;
 }

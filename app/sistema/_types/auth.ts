@@ -35,7 +35,14 @@ export interface LoginState {
 }
 
 export type ActivityKind =
-  "pago" | "alta" | "baja" | "carnet" | "apto" | "ingreso" | "edicion";
+  | "pago"
+  | "aviso"
+  | "alta"
+  | "baja"
+  | "carnet"
+  | "apto"
+  | "ingreso"
+  | "edicion";
 
 // Audit trail entry shown on the dashboard and, in the real system, kept
 // for every change.

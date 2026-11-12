@@ -3,7 +3,8 @@
 import { useReducer } from "react";
 import { buildSeed } from "../_data/seed";
 import { nextReceiptSequence } from "../_lib/billing";
-import { nowIso } from "../_lib/clock";
+import { DEMO_TODAY, nowIso } from "../_lib/clock";
+import { canEmailNotice } from "../_lib/debt-notice";
 import { nextMemberNumber, systemReducer } from "../_lib/system-reducer";
 import type { SystemUser } from "../_types";
 import type { SystemContextValue } from "./system-context";
@@ -48,6 +49,15 @@ export function useSystemStore(user: SystemUser): SystemContextValue {
       dispatch({ type: "recordAccess", log: { ...log, at: nowIso() } }),
     setMemberStatus: (memberId, status) =>
       dispatch({ type: "setMemberStatus", memberId, status, ...stamp() }),
+    sendDebtNotices: (memberIds) => {
+      const sent = state.members.filter(
+        (member) =>
+          memberIds.includes(member.id) &&
+          canEmailNotice(member, state, DEMO_TODAY),
+      ).length;
+      dispatch({ type: "sendDebtNotices", memberIds, ...stamp() });
+      return sent;
+    },
     updateSettings: (settings) =>
       dispatch({ type: "updateSettings", settings, ...stamp() }),
   };

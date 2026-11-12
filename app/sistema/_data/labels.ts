@@ -97,6 +97,7 @@ export const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
 
 export const ACTIVITY_LABELS: Record<ActivityKind, string> = {
   pago: "Cobro",
+  aviso: "Aviso",
   alta: "Alta",
   baja: "Baja",
   carnet: "Carnet",

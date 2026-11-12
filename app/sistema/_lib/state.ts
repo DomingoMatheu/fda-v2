@@ -2,6 +2,7 @@ import type { SystemSettings } from "../_data/settings";
 import type {
   AccessLog,
   ActivityEntry,
+  DebtNotice,
   Enrollment,
   FamilyGroup,
   Fee,
@@ -20,6 +21,7 @@ export interface SystemState {
   enrollments: Enrollment[];
   fees: Fee[];
   payments: Payment[];
+  notices: DebtNotice[];
   receipts: Receipt[];
   seasons: Season[];
   poolPasses: PoolPass[];

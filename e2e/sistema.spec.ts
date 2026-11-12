@@ -121,6 +121,33 @@ test.describe("sistema", () => {
     await expect(badges).toContainText("Al día");
   });
 
+  test("emails a debt notice to every debtor at once", async ({ page }) => {
+    await login(page, "tesoreria");
+    await page.goto("/sistema/cobranza");
+    await page.getByRole("tab", { name: /Morosos/ }).click();
+    const openNotice = page.getByRole("button", {
+      name: "Avisar a todos por correo",
+    });
+
+    await openNotice.click();
+    const dialog = page.getByRole("dialog", {
+      name: "Avisar deuda por correo",
+    });
+    await expect(dialog.getByLabel("Vista previa del correo")).toContainText(
+      "cuotas vencidas",
+    );
+    await dialog.getByRole("button", { name: /^Enviar \d+ avisos$/ }).click();
+    await expect(page.locator(".sys-toast")).toContainText(
+      "avisos de deuda por correo",
+    );
+
+    // Everyone was just warned, so nobody is picked again by default.
+    await openNotice.click();
+    await expect(
+      dialog.getByRole("button", { name: "Enviar 0 avisos" }),
+    ).toBeDisabled();
+  });
+
   test("the gate allows and denies members", async ({ page }) => {
     await login(page, "porteria");
     await page.goto("/sistema/temporada");

@@ -10,8 +10,10 @@ import type {
   NewMemberInput,
   RegisterPaymentInput,
 } from "../_types";
+import { canEmailNotice } from "./debt-notice";
 import {
   billingMemberId,
+  memberBalance,
   receiptNumber,
   scheduleKeyFor,
   scheduledFee,
@@ -50,7 +52,8 @@ export type SystemAction =
       memberId: string;
       status: MemberStatus;
     })
-  | (Stamp & { type: "updateSettings"; settings: SystemSettings });
+  | (Stamp & { type: "updateSettings"; settings: SystemSettings })
+  | (Stamp & { type: "sendDebtNotices"; memberIds: string[] });
 
 function withActivity(
   state: SystemState,
@@ -283,6 +286,42 @@ function issuePoolPass(
   };
 }
 
+// Records an email notice for every debtor picked that has an address.
+function sendDebtNotices(
+  state: SystemState,
+  action: Extract<SystemAction, { type: "sendDebtNotices" }>,
+): SystemState {
+  const recipients = state.members.filter(
+    (member) =>
+      action.memberIds.includes(member.id) &&
+      canEmailNotice(member, state, DEMO_TODAY),
+  );
+  if (recipients.length === 0) return state;
+
+  const notices = recipients.map((member, index) => ({
+    id: `aviso-${state.notices.length + index + 1}`,
+    memberId: member.id,
+    channel: "email" as const,
+    sentAt: action.at,
+    sentByUserId: action.userId,
+    email: member.email,
+    overdueTotal: memberBalance(member, state, DEMO_TODAY).overdueTotal,
+  }));
+  const [first] = recipients;
+  return {
+    ...state,
+    notices: [...state.notices, ...notices],
+    activity: withActivity(state, action, {
+      kind: "aviso",
+      summary:
+        recipients.length === 1
+          ? `Aviso de deuda por correo a ${fullName(first)}`
+          : `Aviso de deuda por correo a ${recipients.length} socios`,
+      memberId: recipients.length === 1 ? first.id : undefined,
+    }),
+  };
+}
+
 function updateMember(
   state: SystemState,
   memberId: string,
@@ -349,6 +388,8 @@ export function systemReducer(
         }),
       };
     }
+    case "sendDebtNotices":
+      return sendDebtNotices(state, action);
     case "updateSettings":
       return {
         ...state,

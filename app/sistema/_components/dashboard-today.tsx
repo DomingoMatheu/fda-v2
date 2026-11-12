@@ -14,6 +14,7 @@ import {
 } from "../_lib/format";
 import { periodLabel } from "../_lib/period";
 import type { Member } from "../_types";
+import { DebtNoticeButton } from "./debt-notice-button";
 import { ReminderLink } from "./reminder-link";
 import { FeeStatusBadge } from "./status-badge";
 
@@ -75,15 +76,27 @@ export function DashboardToday({
                       ) : (
                         <span className="sys-today__muted">Sin teléfono</span>
                       )}
+                      <DebtNoticeButton
+                        memberIds={[account.id]}
+                        label="Correo"
+                        compact
+                      />
                     </div>
                   </li>
                 );
               })}
             </ul>
           )}
-          <Link href="/sistema/cobranza" className="sys-today__more">
-            Ver todos en Cobranza
-          </Link>
+          <div className="sys-today__footer">
+            <Link href="/sistema/cobranza" className="sys-today__more">
+              Ver todos en Cobranza
+            </Link>
+            <DebtNoticeButton
+              memberIds={debtors.map(({ account }) => account.id)}
+              label={`Avisar a los ${debtors.length} por correo`}
+              compact
+            />
+          </div>
         </article>
 
         <article className="sys-card sys-today__card">

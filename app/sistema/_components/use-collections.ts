@@ -11,6 +11,7 @@ import {
   type Debtor,
   type PeriodSummary,
 } from "../_lib/collections";
+import { lastNotice } from "../_lib/debt-notice";
 import { listName } from "../_lib/format";
 import { periodOf } from "../_lib/period";
 import { can } from "../_lib/permissions";
@@ -49,6 +50,8 @@ interface Collections {
   pendingRows: PendingFeeRow[];
   paidRows: PaidFeeRow[];
   debtorRows: Debtor[];
+  // When the member was last warned about their debt, if ever.
+  lastNoticeDate: (memberId: string) => string | undefined;
   canCharge: boolean;
   charge?: ChargeTarget;
   openCharge: (memberId?: string) => void;
@@ -113,6 +116,7 @@ export function useCollections(): Collections {
     pendingRows,
     paidRows,
     debtorRows,
+    lastNoticeDate: (memberId) => lastNotice(state.notices, memberId)?.sentAt,
     canCharge: can(user, "billing:write"),
     charge,
     openCharge: (memberId) => setCharge({ memberId }),

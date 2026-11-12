@@ -80,6 +80,10 @@ presupuesto y las fases siguientes.
 - ✅ Recargo por mora calculado al registrar el cobro.
 - ✅ Recordatorio por WhatsApp con mensaje prearmado (link `wa.me`, igual que
   en la landing). Después: envío automático por WhatsApp Business o email.
+- ✅ Aviso de deuda por correo, a un socio o a todos los morosos de una vez,
+  con vista previa del mail (monto, meses adeudados, cómo pagar) y registro de
+  quién fue avisado y cuándo, para no avisar dos veces seguidas. En la demo el
+  envío es simulado; en el sistema real sale desde el correo de cobranzas.
 - Link de pago de Mercado Pago por cuota y conciliación automática por webhook:
   el socio paga desde el celular y la cuota se marca paga sola.
 - Débito automático con adhesión.
@@ -136,7 +140,9 @@ el schema de Prisma:
   `NewMemberInput`. Categorías: individual, menor, jubilado, familiar (se cobra
   por el grupo), vitalicio (exento). Planes familiares: básico y pleno.
 - `billing.ts`: `Fee` (cuota: social, inscripción, disciplina, temporada),
-  `Payment`, `Receipt`, `RegisterPaymentInput`, `MemberBalance`. El estado
+  `Payment`, `Receipt`, `RegisterPaymentInput`, `MemberBalance`,
+  `DebtNotice` (aviso de deuda enviado: a quién, cuándo, por qué canal y por
+  cuánto). El estado
   guardado es pendiente, paga o anulada; "vencida" se deriva de la fecha de
   vencimiento, nunca se guarda.
 - `season.ts`: `Season`, `PoolPass`, `AccessLog`, `AccessCheck`.

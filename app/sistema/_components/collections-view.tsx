@@ -8,6 +8,7 @@ import { periodLabel } from "../_lib/period";
 import { BillingAmount } from "./billing-amount";
 import { BillingMemberCell } from "./billing-member-cell";
 import { DataTable, type Column } from "./data-table";
+import { DebtNoticeButton } from "./debt-notice-button";
 import { PageHeader } from "./page-header";
 import { PermissionGate } from "./permission-gate";
 import { RegisterPaymentModal } from "./register-payment-modal";
@@ -143,12 +144,6 @@ export function CollectionsView() {
       ),
     },
     {
-      key: "months",
-      header: "Debe",
-      render: ({ months }) => monthsLabel(months),
-      hideOnMobile: true,
-    },
-    {
       key: "since",
       header: "Desde",
       render: ({ since }) => periodLabel(since),
@@ -169,6 +164,15 @@ export function CollectionsView() {
       hideOnMobile: true,
     },
     {
+      key: "notice",
+      header: "Último aviso",
+      render: ({ member }) => {
+        const sentAt = collections.lastNoticeDate(member.id);
+        return sentAt ? formatDate(sentAt) : "—";
+      },
+      hideOnMobile: true,
+    },
+    {
       key: "actions",
       header: "",
       align: "end",
@@ -176,6 +180,7 @@ export function CollectionsView() {
         <span className="sys-collections__actions">
           {chargeButton(member.id)}
           <ReminderLink member={member} compact />
+          <DebtNoticeButton memberIds={[member.id]} label="Correo" compact />
         </span>
       ),
     },
@@ -295,10 +300,19 @@ export function CollectionsView() {
         )}
         {collections.tab === "morosos" && (
           <>
-            <p className="sys-collections__note">
-              Todos los socios con cuotas vencidas, de cualquier período,
-              ordenados por deuda. El recargo se suma al cobrar.
-            </p>
+            <div className="sys-collections__bulk">
+              <p className="sys-collections__note">
+                Todos los socios con cuotas vencidas, de cualquier período,
+                ordenados por deuda. El recargo se suma al cobrar.
+              </p>
+              <DebtNoticeButton
+                memberIds={collections.debtorRows.map(
+                  ({ member }) => member.id,
+                )}
+                label="Avisar a todos por correo"
+                primary
+              />
+            </div>
             <DataTable
               columns={debtorColumns}
               rows={collections.debtorRows}

@@ -117,3 +117,16 @@
     display: block;
   }
 }
+
+.sys-collections__bulk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+.sys-collections__bulk .sys-collections__note {
+  margin-bottom: 0;
+  flex: 1 1 320px;
+}

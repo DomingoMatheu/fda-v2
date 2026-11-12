@@ -1,5 +1,6 @@
 import {
   billingMemberId,
+  memberBalance,
   receiptNumber,
   scheduleKeyFor,
   scheduledFee,
@@ -19,6 +20,7 @@ import type { SystemState } from "../_lib/state";
 import type {
   AccessLog,
   ActivityEntry,
+  DebtNotice,
   Enrollment,
   FamilyGroup,
   FamilyPlan,
@@ -59,6 +61,7 @@ const PAYMENT_METHODS: PaymentMethod[] = [
   "qr",
   "credito",
 ];
+const NOTICE_DATE = "2026-11-02";
 const CASHIER_IDS = ["u-secretaria", "u-tesoreria", "u-tesoreria"];
 
 // Rough DNI numbers by birth year, so documents look right for each age.
@@ -656,6 +659,7 @@ export function buildSeed(): SystemState {
     enrollments,
     fees,
     payments,
+    notices: [],
     receipts,
     seasons: SEASONS,
     poolPasses,
@@ -664,9 +668,36 @@ export function buildSeed(): SystemState {
     settings: DEFAULT_SETTINGS,
   };
 
+  state.notices = buildNotices(state);
   state.accessLogs = buildAccessLogs(rng, state, passHolders);
   state.activity = buildActivity(state);
   return state;
+}
+
+// Treasury emailed the biggest debtors at the start of the month.
+function buildNotices(state: SystemState): DebtNotice[] {
+  return state.members
+    .filter(
+      (member) =>
+        member.email &&
+        billingMemberId(member, state.familyGroups) === member.id,
+    )
+    .map((member) => ({
+      member,
+      balance: memberBalance(member, state, NOTICE_DATE),
+    }))
+    .filter(({ balance }) => balance.status === "moroso")
+    .sort((a, b) => b.balance.overdueTotal - a.balance.overdueTotal)
+    .slice(0, 5)
+    .map(({ member, balance }, index) => ({
+      id: `aviso-${index + 1}`,
+      memberId: member.id,
+      channel: "email",
+      sentAt: `${NOTICE_DATE}T10:${pad(15 + index)}:00`,
+      sentByUserId: "u-tesoreria",
+      email: member.email,
+      overdueTotal: balance.overdueTotal,
+    }));
 }
 
 // This morning at the gate: a mix of members with and without access and a

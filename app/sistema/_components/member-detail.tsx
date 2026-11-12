@@ -19,6 +19,7 @@ import { PermissionGate } from "./permission-gate";
 import { RegisterPaymentModal } from "./register-payment-modal";
 import { ReminderLink } from "./reminder-link";
 import { StatCard } from "./stat-card";
+import { DebtNoticeButton } from "./debt-notice-button";
 import { FeeStatusBadge, MemberStatusBadge } from "./status-badge";
 import { useMemberDetail } from "./use-member-detail";
 
@@ -70,6 +71,7 @@ export function MemberDetail({ memberId }: MemberDetailProps) {
             </button>
           )}
           <ReminderLink member={member} />
+          <DebtNoticeButton memberIds={[member.id]} label="Avisar por correo" />
           {detail.canEdit && member.status === "activo" && (
             <button
               type="button"

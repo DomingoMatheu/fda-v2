@@ -48,6 +48,11 @@ usan la clave `matheu2026`.
   con cuántos meses deben y desde cuándo).
 - Botón **WhatsApp** de un moroso: "El recordatorio sale con un clic, sin
   copiar y pegar nada."
+- **Avisar a todos por correo**: se abre la lista de morosos con correo
+  cargado y la vista previa del mail que recibe cada uno (cuánto debe, de qué
+  meses y cómo pagar). Enviá: la columna **Último aviso** pasa a hoy, y si
+  volvés a abrirlo nadie queda tildado, para no avisar dos veces seguidas.
+  Avisá que en la demo el envío es simulado.
 - **Registrar cobro** general: buscás al socio desde el mismo modal.
 
 ## 4. Temporada y portería (2 min 30 s)
