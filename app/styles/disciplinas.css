@@ -29,28 +29,23 @@
 .disc {
   grid-column: span 2;
 }
-.disc:nth-last-child(3) {
-  grid-column: 3 / span 2;
+/* Twelve cards: rows of five on desktop, so the last two are centered. */
+.disc:nth-last-child(2) {
+  grid-column: 4 / span 2;
 }
 @media (max-width: 1100px) {
   .disc-grid {
     grid-template-columns: repeat(6, 1fr);
     gap: 18px;
   }
-  .disc:nth-last-child(3) {
+  .disc:nth-last-child(2) {
     grid-column: span 2;
-  }
-  .disc:last-child {
-    grid-column: 3 / span 2;
   }
 }
 @media (max-width: 760px) {
   .disc-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 14px;
-  }
-  .disc:last-child {
-    grid-column: 2 / span 2;
   }
 }
 .disc {

@@ -34,8 +34,8 @@ export function Hero() {
             </h1>
             <p className="hero-lede">
               Somos un club de familia, abierto, con muchas hectáreas de{" "}
-              <em>árboles y deporte</em>. Trece disciplinas, pileta, dos
-              quinchos y un salón de eventos — todo a la vuelta de tu casa.
+              <em>árboles y deporte</em>. Doce disciplinas, pileta, dos quinchos
+              y un salón de eventos — todo a la vuelta de tu casa.
             </p>
             <div className="hero-meta">
               <div className="stat">

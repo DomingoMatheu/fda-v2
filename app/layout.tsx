@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Club Domingo Matheu | Deportes y comunidad en Rosario",
   description:
-    "Club familiar en Zona Sur de Rosario con más de 80 años de historia, 13 disciplinas, pileta, salón de eventos y un amplio predio arbolado.",
+    "Club familiar en Zona Sur de Rosario con más de 80 años de historia, 12 disciplinas, pileta, salón de eventos y un amplio predio arbolado.",
   applicationName: "Club Domingo Matheu",
   keywords: [
     "Club Domingo Matheu",

@@ -87,11 +87,4 @@ export const DISCIPLINES: Discipline[] = [
     imageClassName: "photo-cover--volleyball",
     phone: "341 600 1397",
   },
-  {
-    name: "Hockey",
-    image: "/club/hockey-entrenamiento.jpg",
-    alt: "Jugadoras de hockey entrenando de noche en el predio",
-    imageClassName: "photo-cover--hockey",
-    phone: "341 746 1974",
-  },
 ];

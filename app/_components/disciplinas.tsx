@@ -15,7 +15,7 @@ export function Disciplinas() {
           </Reveal>
           <Reveal className="right" delay=".15s">
             Desde el arco y el patín hasta el wing chun y el ultimate frisbee —
-            trece disciplinas con su cancha, su gente y sus horarios. Todas con
+            doce disciplinas con su cancha, su gente y sus horarios. Todas con
             el espíritu del club. Tocá cualquiera para escribirle directo por
             WhatsApp.
           </Reveal>
