@@ -30,6 +30,18 @@ export const AGREEMENTS: Agreement[] = [
     logo: "/convenios/secyt.jpg",
     announcementUrl: "https://www.instagram.com/p/Dezmv12oAhz/",
   },
+  {
+    id: "ate",
+    name: "ATE",
+    fullName: "Asociación Trabajadores del Estado",
+    benefit: "Temporada de pileta",
+    description:
+      "Renovamos el convenio: los afiliados pueden adquirir la temporada de pileta en el club y disfrutar del verano en familia y con amigos.",
+    // TODO: pending from the club: who qualifies, how to claim it and validity.
+    details: [],
+    logo: "/convenios/ate.jpg",
+    announcementUrl: "https://www.instagram.com/p/DgQIBU3RjqV/",
+  },
 ];
 
 export const agreementWhatsappMessage = (agreement: Agreement): string =>

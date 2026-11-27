@@ -40,6 +40,7 @@ Se guardan en `public/convenios` y se muestran en las tarjetas de la sección Co
 | Archivo | Origen | Uso en la página |
 | --- | --- | --- |
 | `secyt.jpg` | Foto de perfil de [@secytrosario en Instagram](https://www.instagram.com/secytrosario/) (150 × 150 px) | Tarjeta del convenio con SECYT. Si el club consigue el logo en mayor resolución o en SVG, conviene reemplazarlo. |
+| `ate.jpg` | Logo de la [web de ATE Rosario](https://www.aterosario.org.ar/) (blanco sobre transparente), montado sobre un cuadrado verde de 300 × 300 px | Tarjeta del convenio con ATE. Si el club consigue el logo oficial en mayor resolución o en SVG, conviene reemplazarlo. |
 
 ## Video aportado por el usuario
 
